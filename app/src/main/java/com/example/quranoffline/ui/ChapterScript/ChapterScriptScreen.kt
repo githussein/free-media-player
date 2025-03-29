@@ -14,13 +14,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.quranoffline.extensions.convertToArabicIndicNumbers
+import com.example.quranoffline.extensions.fixHafsFont
 import com.example.quranoffline.ui.components.ComponentGradientBox
 import com.example.quranoffline.ui.components.ComponentLoadingState
+import com.example.quranoffline.ui.theme.uthmanicFontFamily
 
 @Composable
 fun ChapterScriptScreen(
@@ -51,8 +55,8 @@ fun ChapterScriptScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(script?.chapterScript?.surahName.orEmpty(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
-                            Text(script?.chapterScript?.surahNameTranslation.orEmpty(), color = Color.White, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
-                            Text(script?.chapterScript?.surahNameArabicLong.orEmpty(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 16.dp))
+                            Text(script?.chapterScript?.surahNameTranslation.orEmpty(), color = Color.White, fontWeight = FontWeight.Light, modifier = Modifier.padding(bottom = 16.dp))
+                            Text(script?.chapterScript?.surahNameArabicLong.orEmpty(), color = Color.White, style = TextStyle(fontFamily = uthmanicFontFamily, fontWeight = FontWeight.Bold, fontSize = 24.sp), modifier = Modifier.padding(bottom = 16.dp))
                             Text("${script?.chapterScript?.totalAyah.toString()} verses - ${script?.chapterScript?.revelationPlace.orEmpty()}", color = Color.White, fontSize = 14.sp)
                         }
                     }
@@ -78,8 +82,8 @@ fun VerseScriptItem(index: Int, arabic: String, english: String) {
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(arabic, modifier = Modifier.padding(vertical = 16.dp), fontSize = 18.sp, textAlign = TextAlign.Center)
-        Text("( ${index + 1} )", modifier = Modifier.padding(bottom = 16.dp), textAlign = TextAlign.Center)
+        Text(arabic.fixHafsFont, modifier = Modifier.padding(vertical = 16.dp), style = TextStyle(fontFamily = uthmanicFontFamily, fontSize = 22.sp), textAlign = TextAlign.Center)
+        Text("${index + 1}".convertToArabicIndicNumbers(), modifier = Modifier.padding(bottom = 16.dp), textAlign = TextAlign.Center, style = TextStyle(fontFamily = uthmanicFontFamily, fontSize = 24.sp))
         Text(english, modifier = Modifier.padding(bottom = 16.dp))
         HorizontalDivider(thickness = 0.3.dp, color = Color.Gray)
     }
