@@ -1,9 +1,10 @@
 package com.example.quranoffline.ui.AllRecitersScreen
 
-import android.media.MediaPlayer
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,12 +19,12 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.quranoffline.MediaControllerViewModel
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.Surah
 
@@ -44,6 +46,7 @@ import com.example.quranoffline.data.Surah
 fun ReciterScreen(
     modifier: Modifier,
     reciterId: String,
+    showMediaPlayer: () -> Unit,
     viewModel: ReciterViewModel = hiltViewModel()
 ) {
 
@@ -60,7 +63,12 @@ fun ReciterScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Text(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp), text = reciter?.name.orEmpty(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                text = reciter?.name.orEmpty(),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
 
 
@@ -69,7 +77,13 @@ fun ReciterScreen(
         }
 
         surahList.forEach {
-            item { ComposeSurahItem(it.surah, it.server.orEmpty()) }
+            item {
+                ComposeSurahItem(
+                    it.surah,
+                    it.server.orEmpty(),
+                    showMediaPlayer = showMediaPlayer
+                )
+            }
         }
 
     }
@@ -93,10 +107,15 @@ fun ReciterDropdownMenu(
     ) {
         TextField(
             value = selectedMoshaf ?: "Select a Moshaf",
-            onValueChange = {}, // todo update availableSurahList
+            onValueChange = {}, // todo update available SurahList
             readOnly = true,
 
-            trailingIcon = { Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "arrow down icon") },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "arrow down icon"
+                )
+            },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -126,63 +145,57 @@ fun ReciterDropdownMenu(
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-private fun ComposeSurahItem(surah: Surah?, server: String) {
+private fun ComposeSurahItem(
+    surah: Surah?,
+    serverUrl: String,
+    mediaPlayerViewModel: MediaControllerViewModel = hiltViewModel(),
+    showMediaPlayer: () -> Unit
+) {
     if (surah == null) return
 
-    val mediaPlayer = remember { MediaPlayer() }
-    var isPlaying by remember { mutableStateOf(false) }
+    val isPlaying by mediaPlayerViewModel.isPlaying.collectAsState()
 
-    DisposableEffect(Unit) {
-        onDispose {
-            mediaPlayer.release()
-        }
-    }
-
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-//            .clickable(onClick = { onSurahClick(surah.id.toString()) }),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(text = surah.id.toString(), color = Color.Gray)
-
-        Text(
-            text = surah.name,
+    Column {
+        Row(
             modifier = Modifier
-                .padding(start = 16.dp)
-                .weight(1f),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Icon(
-            modifier = Modifier
-                .border(4.dp, Color.Gray, CircleShape)
-                .padding(4.dp)
-                .clickable {
-                    if (isPlaying) {
-                        mediaPlayer.stop()
-                        mediaPlayer.reset()
-                        isPlaying = false
-                    } else {
-                        try {
-                            mediaPlayer.setDataSource(server)
-                            mediaPlayer.prepareAsync()
-                            mediaPlayer.setOnPreparedListener {
-                                it.start()
-                                isPlaying = true
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                .fillMaxWidth()
+                .clickable(
+                    onClick = {
+                        if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) {
+                            mediaPlayerViewModel.pauseMedia()
+                        } else {
+                            mediaPlayerViewModel.playMedia(serverUrl)
                         }
-                    }
-                },
-            imageVector = if (isPlaying) Icons.Default.Menu else Icons.Default.PlayArrow,
-            contentDescription = if (isPlaying) "Pause icon" else "Play icon"
-        )
+                        mediaPlayerViewModel.currentSurahId.value = surah.id
+                        showMediaPlayer()
+                    })
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(text = surah.id.toString(), color = Color.Gray)
+
+            Text(
+                text = surah.name,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Icon(
+                modifier = Modifier
+                    .border(4.dp, Color.Gray, CircleShape)
+                    .padding(4.dp),
+                imageVector = if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) Icons.Default.Menu else Icons.Default.PlayArrow,
+                contentDescription = if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) "Pause icon" else "Play icon"
+            )
+        }
+
+        HorizontalDivider(thickness = 0.3.dp)
     }
 }
 
