@@ -24,7 +24,6 @@ import com.example.quranoffline.ui.HadithScript.BookChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookScreen
 import com.example.quranoffline.ui.HomeScreen
 import com.example.quranoffline.ui.RadioStationsScreen.RadioStationsScreen
-import com.example.quranoffline.ui.components.MediaController
 import com.example.quranoffline.ui.theme.QuranOfflineTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +38,7 @@ class MainActivity : ComponentActivity() {
             QuranOfflineTheme {
                 val navController = rememberNavController()
 
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                             MediaController(
                                 title = "Media Title",
                                 description = "Media Description",
+                                onPlayPauseClick = { },
                                 onClose = { isMediaPlayerVisible = false }
                             )
                         }
@@ -79,6 +80,7 @@ class MainActivity : ComponentActivity() {
                             val reciterId = it.toRoute<Reciter>().reciterId
                             ReciterScreen(
                                 modifier = Modifier.padding(innerPadding),
+                                showMediaPlayer = { isMediaPlayerVisible = true },
                                 reciterId = reciterId,
                             )
                         }
@@ -116,6 +118,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun showMediaPlayer() {
+        isMediaPlayerVisible = true
     }
 }
 
