@@ -113,7 +113,9 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
                 letter = "M",
                 moshaf = Moshaf.generateRandomMoshafList()
             )
-        ) {}
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("118"))
+        }
         ComposeReciterItem(
             Reciter(
                 id = 1,
@@ -121,15 +123,19 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
                 letter = "M",
                 moshaf = Moshaf.generateRandomMoshafList()
             )
-        ) {}
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("123"))
+        }
         ComposeReciterItem(
             Reciter(
                 id = 1,
-                name = "Mohamemed Al-Minshawy",
+                name = "Mohamemed Al-Minshawi",
                 letter = "M",
                 moshaf = Moshaf.generateRandomMoshafList()
             )
-        ) {}
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("112"))
+        }
         Spacer(modifier = modifier.height(32.dp))
 
 
