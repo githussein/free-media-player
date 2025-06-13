@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quranoffline.data.QSurah
+import com.example.quranoffline.ui.theme.uthmanicFontFamily
 
 @Composable
 fun TranscriptChapterItem(
@@ -40,9 +42,9 @@ fun TranscriptChapterItem(
         Column(
             modifier = Modifier.weight(1f),
         ) {
-            Text(text = chapter.surahNameArabicLong, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = chapter.surahNameArabicLong, style = TextStyle(fontFamily = uthmanicFontFamily, fontSize = 20.sp, fontWeight = FontWeight.Bold))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = chapter.surahName, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = chapter.surahName, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = chapter.surahNameTranslation, fontSize = 16.sp)
         }
