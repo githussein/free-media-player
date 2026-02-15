@@ -124,8 +124,8 @@ fun ReciterDropdownMenu(
             ),
             shape = RoundedCornerShape(50),
             modifier = Modifier
-                .menuAnchor() // Ensure the dropdown is anchored to the TextField
-                .clickable { expanded = true } // Make the TextField clickable
+                .menuAnchor()
+                .clickable { expanded = true }
         )
 
         ExposedDropdownMenu(
