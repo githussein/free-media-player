@@ -2,6 +2,7 @@ package com.example.quranoffline.media
 
 import android.content.Context
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,48 @@ class PlaybackService @Inject constructor(
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState: StateFlow<MediaState> = _mediaState
 
+
+    init {
+        player.addListener(object : Player.Listener {
+
+            override fun onPlaybackStateChanged(state: Int) {
+                when (state) {
+                    Player.STATE_BUFFERING -> {
+                        _mediaState.value = _mediaState.value.copy(
+                            isLoading = true
+                        )
+                    }
+
+                    Player.STATE_READY -> {
+                        _mediaState.value = _mediaState.value.copy(
+                            isLoading = false,
+                            isPlaying = player.isPlaying
+                        )
+                    }
+
+                    Player.STATE_ENDED -> {
+                        _mediaState.value = _mediaState.value.copy(
+                            isPlaying = false
+                        )
+                    }
+                }
+            }
+
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                _mediaState.value = _mediaState.value.copy(
+                    isPlaying = isPlaying
+                )
+            }
+        })
+    }
+
     fun play(item: PlaybackItem) {
+        _mediaState.value = MediaState(
+            currentItem = item,
+            isPlaying = false,
+            isLoading = true
+        )
+
         player.stop()
         player.clearMediaItems()
 

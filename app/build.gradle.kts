@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.quranoffline"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.quranoffline"
