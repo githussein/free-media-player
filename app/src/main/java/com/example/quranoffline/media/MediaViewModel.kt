@@ -10,10 +10,14 @@ class MediaViewModel @Inject constructor(
     private val playbackService: PlaybackService
 ) : ViewModel() {
     val mediaState: StateFlow<MediaState> = playbackService.mediaState
+    fun next() = playbackService.playNext()
+    fun previous() = playbackService.playPrevious()
 
     fun play(item: PlaybackItem) {
         playbackService.play(item)
     }
+
+    fun setPlaylist(list: List<PlaybackItem>) = playbackService.setPlaylist(list)
 
     fun pause() = playbackService.pause()
 

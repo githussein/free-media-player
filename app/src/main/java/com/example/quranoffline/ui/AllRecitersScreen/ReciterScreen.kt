@@ -13,7 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,6 +59,27 @@ fun ReciterScreen(
     val reciter = viewModel.selectedReciter.value
     val surahList by viewModel.surahList.collectAsState()
     val mediaState by mediaViewModel.mediaState.collectAsState()
+
+    LaunchedEffect(surahList) {
+
+        if (surahList.isEmpty()) return@LaunchedEffect
+
+        val playbackList = surahList.mapNotNull { surahUi ->
+            val surah = surahUi.surah
+            val url = surahUi.server
+
+            if (surah != null && !url.isNullOrEmpty()) {
+                PlaybackItem.SurahItem(
+                    surahId = surah.id,
+                    title = surah.name,
+                    url = url
+                )
+            } else null
+        }
+
+        mediaViewModel.setPlaylist(playbackList)
+    }
+
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -190,7 +211,7 @@ private fun ComposeSurahItem(
                 modifier = Modifier
                     .border(4.dp, Color.Gray, CircleShape)
                     .padding(4.dp),
-                imageVector = if (isPlaying) Icons.Default.Menu else Icons.Default.PlayArrow,
+                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                 contentDescription = if (isPlaying) "Pause icon" else "Play icon"
             )
         }
