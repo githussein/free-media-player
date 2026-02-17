@@ -42,9 +42,11 @@ class PlaybackService @Inject constructor(
                     }
 
                     Player.STATE_ENDED -> {
-                        _mediaState.value = _mediaState.value.copy(
-                            isPlaying = false
-                        )
+                        if (currentIndex < playlist.lastIndex) {
+                            playNext()
+                        } else {
+                            stop()
+                        }
                     }
                 }
             }
@@ -104,9 +106,9 @@ class PlaybackService @Inject constructor(
     fun stop() {
         player.stop()
         player.clearMediaItems()
+        _mediaState.value = MediaState()
     }
 
-    fun isPlaying(): Boolean = player.isPlaying
 
     fun release() {
         player.release()

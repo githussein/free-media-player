@@ -24,4 +24,8 @@ class MediaViewModel @Inject constructor(
     fun resume() = playbackService.resume()
 
     fun stop() = playbackService.stop()
+
+    override fun onCleared() {
+        playbackService.release()
+    }
 }
