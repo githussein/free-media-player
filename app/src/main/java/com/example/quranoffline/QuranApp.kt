@@ -35,9 +35,9 @@ fun QuranApp() {
                             mediaViewModel.resume()
                         }
                     },
-                    onClose = {
-                        mediaViewModel.stop()
-                    }
+                    onNext = { mediaViewModel.next() },
+                    onPrevious = { mediaViewModel.previous() },
+                    onClose = { mediaViewModel.stop() }
                 )
             }
         }

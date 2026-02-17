@@ -19,6 +19,9 @@ class PlaybackService @Inject constructor(
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState: StateFlow<MediaState> = _mediaState
 
+    private var playlist: List<PlaybackItem> = emptyList()
+    private var currentIndex: Int = -1
+
 
     init {
         player.addListener(object : Player.Listener {
@@ -55,6 +58,8 @@ class PlaybackService @Inject constructor(
     }
 
     fun play(item: PlaybackItem) {
+        currentIndex = playlist.indexOf(item)
+
         _mediaState.value = MediaState(
             currentItem = item,
             isPlaying = false,
@@ -68,6 +73,24 @@ class PlaybackService @Inject constructor(
         player.setMediaItem(mediaItem)
         player.prepare()
         player.play()
+    }
+
+    fun setPlaylist(list: List<PlaybackItem>) {
+        playlist = list
+    }
+
+    fun playNext() {
+        if (currentIndex < playlist.lastIndex) {
+            currentIndex++
+            play(playlist[currentIndex])
+        }
+    }
+
+    fun playPrevious() {
+        if (currentIndex > 0) {
+            currentIndex--
+            play(playlist[currentIndex])
+        }
     }
 
     fun pause() {
