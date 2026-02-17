@@ -1,34 +1,52 @@
 package com.example.quranoffline
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.quranoffline.media.MediaViewModel
 
 @Composable
 fun QuranApp() {
+
     val navController = rememberNavController()
-    var isMediaPlayerVisible by remember { mutableStateOf(false) }
+    val mediaViewModel: MediaViewModel = hiltViewModel()
+
+    val mediaState by mediaViewModel.mediaState.collectAsState()
 
     Scaffold(
         bottomBar = {
-            if (isMediaPlayerVisible) {
+            AnimatedVisibility(
+                visible = mediaState.currentItem != null,
+                enter = slideInVertically { it },
+                exit = slideOutVertically { it }
+            ) {
                 MediaController(
-                    title = "Media Title",
-                    description = "Media Description",
-                    onPlayPauseClick = { },
-                    onClose = { isMediaPlayerVisible = false }
+                    mediaState = mediaState,
+                    onPlayPauseClick = {
+                        if (mediaState.isPlaying) {
+                            mediaViewModel.pause()
+                        } else {
+                            mediaViewModel.resume()
+                        }
+                    },
+                    onClose = {
+                        mediaViewModel.stop()
+                    }
                 )
             }
         }
     ) { innerPadding ->
+
         AppNavHost(
             navController = navController,
             innerPadding = innerPadding,
-            showMediaPlayer = { isMediaPlayerVisible = true }
+            mediaViewModel = mediaViewModel
         )
     }
 }

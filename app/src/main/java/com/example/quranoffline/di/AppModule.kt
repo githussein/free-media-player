@@ -1,6 +1,5 @@
 package com.example.quranoffline.di
 
-import android.app.Application
 import com.example.quranoffline.data.BookService
 import com.example.quranoffline.data.QuranService
 import com.example.quranoffline.data.RecitationService
@@ -12,8 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule : Application() {
-
+object AppModule {
     @Provides
     @Singleton
     fun provideRecitationService(): RecitationService {

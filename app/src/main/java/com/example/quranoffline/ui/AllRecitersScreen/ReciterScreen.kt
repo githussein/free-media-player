@@ -1,6 +1,5 @@
 package com.example.quranoffline.ui.AllRecitersScreen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,15 +37,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.quranoffline.MediaControllerViewModel
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.Surah
+import com.example.quranoffline.media.MediaState
+import com.example.quranoffline.media.MediaViewModel
+import com.example.quranoffline.media.PlaybackItem
 
 @Composable
 fun ReciterScreen(
     modifier: Modifier,
     reciterId: String,
-    showMediaPlayer: () -> Unit,
+    mediaViewModel: MediaViewModel,
     viewModel: ReciterViewModel = hiltViewModel()
 ) {
 
@@ -54,8 +55,10 @@ fun ReciterScreen(
         viewModel.fetchReciterById(reciterId)
         viewModel.fetchSurahList()
     }
+
     val reciter = viewModel.selectedReciter.value
     val surahList by viewModel.surahList.collectAsState()
+    val mediaState by mediaViewModel.mediaState.collectAsState()
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -71,24 +74,31 @@ fun ReciterScreen(
             )
         }
 
-
         if (reciter?.moshaf != null && reciter.moshaf.size > 1) {
             item { ReciterDropdownMenu(reciter = reciter) }
         }
 
-        surahList.forEach {
+        surahList.forEach { surahUi ->
             item {
                 ComposeSurahItem(
-                    it.surah,
-                    it.server.orEmpty(),
-                    showMediaPlayer = showMediaPlayer
+                    surah = surahUi.surah ?: return@item,
+                    serverUrl = surahUi.server.orEmpty(),
+                    mediaState = mediaState,
+                    onMediaClick = { surah ->
+                        mediaViewModel.play(
+                            PlaybackItem.SurahItem(
+                                surahId = surah.id,
+                                title = surah.name,
+                                url = surahUi.server.orEmpty()
+                            )
+                        )
+                    }
                 )
             }
         }
-
     }
-
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -145,35 +155,25 @@ fun ReciterDropdownMenu(
     }
 }
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 private fun ComposeSurahItem(
-    surah: Surah?,
+    surah: Surah,
     serverUrl: String,
-    mediaPlayerViewModel: MediaControllerViewModel = hiltViewModel(),
-    showMediaPlayer: () -> Unit
+    mediaState: MediaState,
+    onMediaClick: (Surah) -> Unit
 ) {
-    if (surah == null) return
-
-    val isPlaying by mediaPlayerViewModel.isPlaying.collectAsState()
+    val isPlaying = mediaState.isPlaying &&
+            mediaState.currentItem is PlaybackItem.SurahItem &&
+            mediaState.currentItem.surahId == surah.id
 
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(
-                    onClick = {
-                        if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) {
-                            mediaPlayerViewModel.pauseMedia()
-                        } else {
-                            mediaPlayerViewModel.playMedia(serverUrl)
-                        }
-                        mediaPlayerViewModel.currentSurahId.value = surah.id
-                        showMediaPlayer()
-                    })
+                .clickable { onMediaClick(surah) }
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = surah.id.toString(), color = Color.Gray)
 
@@ -190,8 +190,8 @@ private fun ComposeSurahItem(
                 modifier = Modifier
                     .border(4.dp, Color.Gray, CircleShape)
                     .padding(4.dp),
-                imageVector = if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) Icons.Default.Menu else Icons.Default.PlayArrow,
-                contentDescription = if (isPlaying && mediaPlayerViewModel.currentSurahId.value == surah.id) "Pause icon" else "Play icon"
+                imageVector = if (isPlaying) Icons.Default.Menu else Icons.Default.PlayArrow,
+                contentDescription = if (isPlaying) "Pause icon" else "Play icon"
             )
         }
 

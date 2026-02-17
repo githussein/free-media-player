@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.ui.AllRecitersScreen.AllRecitersScreen
 import com.example.quranoffline.ui.AllRecitersScreen.ReciterScreen
 import com.example.quranoffline.ui.ChapterScript.ChapterScriptScreen
@@ -22,7 +23,7 @@ import com.example.quranoffline.ui.RadioStationsScreen.RadioStationsScreen
 fun AppNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    showMediaPlayer: () -> Unit
+    mediaViewModel: MediaViewModel
 ) {
     NavHost(
         navController = navController,
@@ -52,9 +53,8 @@ fun AppNavHost(
             val reciterId = it.toRoute<Reciter>().reciterId
             ReciterScreen(
                 modifier = Modifier.padding(innerPadding),
-                // todo foreground media service
-                showMediaPlayer = { true },
                 reciterId = reciterId,
+                mediaViewModel = mediaViewModel
             )
         }
 
