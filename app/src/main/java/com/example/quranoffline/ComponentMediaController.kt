@@ -43,13 +43,14 @@ fun MediaController(
         tonalElevation = 3.dp,
         shadowElevation = 6.dp,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
     ) {
         Column(
             modifier = Modifier.padding(vertical = 8.dp)
         ) {
 
-            // 🔹 Title Section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,7 +83,6 @@ fun MediaController(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // 🔹 Controls Row (Centered)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
