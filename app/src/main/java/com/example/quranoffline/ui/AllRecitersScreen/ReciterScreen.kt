@@ -60,28 +60,6 @@ fun ReciterScreen(
     val surahList by viewModel.surahList.collectAsState()
     val mediaState by mediaViewModel.mediaState.collectAsState()
 
-    LaunchedEffect(surahList) {
-
-        if (surahList.isEmpty()) return@LaunchedEffect
-
-        val playbackList = surahList.mapNotNull { surahUi ->
-            val surah = surahUi.surah
-            val url = surahUi.server
-
-            if (surah != null && !url.isNullOrEmpty()) {
-                PlaybackItem.SurahItem(
-                    surahId = surah.id,
-                    title = surah.name,
-                    reciterName = reciter?.name.orEmpty(),
-                    url = url
-                )
-            } else null
-        }
-
-        mediaViewModel.setPlaylist(playbackList)
-    }
-
-
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -104,16 +82,12 @@ fun ReciterScreen(
             item {
                 ComposeSurahItem(
                     surah = surahUi.surah ?: return@item,
-                    serverUrl = surahUi.server.orEmpty(),
                     mediaState = mediaState,
                     onMediaClick = { surah ->
-                        mediaViewModel.play(
-                            PlaybackItem.SurahItem(
-                                surahId = surah.id,
-                                title = surah.name,
-                                reciterName = reciter?.name.orEmpty(),
-                                url = surahUi.server.orEmpty()
-                            )
+                        mediaViewModel.playSurah(
+                            surah = surah,
+                            reciterName = reciter?.name.orEmpty(),
+                            surahList = surahList
                         )
                     }
                 )
@@ -181,7 +155,6 @@ fun ReciterDropdownMenu(
 @Composable
 private fun ComposeSurahItem(
     surah: Surah,
-    serverUrl: String,
     mediaState: MediaState,
     onMediaClick: (Surah) -> Unit
 ) {
