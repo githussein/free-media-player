@@ -38,7 +38,6 @@ class MediaViewModel @Inject constructor(
             {
                 controller = controllerFuture.get()
 
-                // Optional: listen to playback state changes
                 controller?.addListener(object : Player.Listener {
                     override fun onIsPlayingChanged(isPlaying: Boolean) {
                         _mediaState.value =
@@ -61,34 +60,30 @@ class MediaViewModel @Inject constructor(
         val mediaItems = list.map { item ->
             MediaItem.Builder()
                 .setUri(item.url)
-                .setMediaId(item.id.toString())
+                .setMediaId(item.id)
                 .setTag(item)
                 .build()
         }
 
         controller?.setMediaItems(mediaItems, startIndex, 0L)
         controller?.prepare()
-        controller?.play()
-
-        _mediaState.value = _mediaState.value.copy(
-            currentItem = list.getOrNull(startIndex),
-            isPlaying = true,
-            isLoading = true
-        )
     }
 
     fun play(item: PlaybackItem) {
-        val mediaItem = MediaItem.Builder()
-            .setUri(item.url)
-            .setMediaId(item.id.toString())
-            .setTag(item)
-            .build()
+        val index = controller?.mediaItemCount
+            ?.let { count ->
+                (0 until count).firstOrNull { i ->
+                    controller?.getMediaItemAt(i)?.mediaId == item.id
+                }
+            } ?: -1
 
-        controller?.setMediaItem(mediaItem)
-        controller?.prepare()
-        controller?.play()
+        if (index != -1) {
+            controller?.seekToDefaultPosition(index)
+            controller?.play()
 
-        _mediaState.value = _mediaState.value.copy(currentItem = item, isPlaying = true)
+            _mediaState.value =
+                _mediaState.value.copy(currentItem = item, isPlaying = true)
+        }
     }
 
     fun pause() = controller?.pause()
