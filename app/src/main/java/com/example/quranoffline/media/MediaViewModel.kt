@@ -8,6 +8,8 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.example.quranoffline.data.Surah
+import com.example.quranoffline.data.SurahUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,6 +87,31 @@ class MediaViewModel @Inject constructor(
             controller?.seekToDefaultPosition(index)
             controller?.play()
         }
+    }
+
+    fun playSurah(
+        surah: Surah,
+        reciterName: String,
+        surahList: List<SurahUi>
+    ) {
+        val playbackList = surahList.mapNotNull { surahUi ->
+            val s = surahUi.surah
+            val url = surahUi.server
+            if (s != null && !url.isNullOrEmpty()) {
+                PlaybackItem.SurahItem(
+                    surahId = s.id,
+                    title = s.name,
+                    url = url,
+                    reciterName = reciterName
+                )
+            } else null
+        }
+
+        val startIndex = playbackList.indexOfFirst { it.surahId == surah.id }
+        if (startIndex == -1 || playbackList.isEmpty()) return
+
+        setPlaylist(playbackList, startIndex)
+        play(playbackList[startIndex])
     }
 
     fun pause() = controller?.pause()
