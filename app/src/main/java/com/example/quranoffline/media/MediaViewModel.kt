@@ -17,13 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private var controller: MediaController? = null
 
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
+    private var currentPlaylist: List<PlaybackItem> = emptyList()
 
     init {
         val sessionToken = SessionToken(
@@ -31,17 +32,26 @@ class MediaViewModel @Inject constructor(
             ComponentName(context, MediaPlaybackService::class.java)
         )
 
-        val controllerFuture = MediaController.Builder(context.applicationContext, sessionToken)
-            .buildAsync()
+        val controllerFuture =
+            MediaController.Builder(context.applicationContext, sessionToken)
+                .buildAsync()
 
         controllerFuture.addListener(
             {
                 controller = controllerFuture.get()
 
                 controller?.addListener(object : Player.Listener {
+
                     override fun onIsPlayingChanged(isPlaying: Boolean) {
-                        _mediaState.value =
-                            _mediaState.value.copy(isPlaying = isPlaying)
+                        _mediaState.value = _mediaState.value.copy(isPlaying = isPlaying)
+
+                        if (isPlaying) {
+                            val index = controller?.currentMediaItemIndex ?: -1
+                            if (index != -1 && index < currentPlaylist.size) {
+                                _mediaState.value =
+                                    _mediaState.value.copy(currentItem = currentPlaylist[index])
+                            }
+                        }
                     }
 
                     override fun onPlaybackStateChanged(state: Int) {
@@ -49,7 +59,6 @@ class MediaViewModel @Inject constructor(
                         _mediaState.value = _mediaState.value.copy(isLoading = loading)
                     }
                 })
-
             },
             ContextCompat.getMainExecutor(context)
         )
@@ -57,6 +66,7 @@ class MediaViewModel @Inject constructor(
 
 
     fun setPlaylist(list: List<PlaybackItem>, startIndex: Int = 0) {
+        currentPlaylist = list
         val mediaItems = list.map { item ->
             MediaItem.Builder()
                 .setUri(item.url)
@@ -70,19 +80,10 @@ class MediaViewModel @Inject constructor(
     }
 
     fun play(item: PlaybackItem) {
-        val index = controller?.mediaItemCount
-            ?.let { count ->
-                (0 until count).firstOrNull { i ->
-                    controller?.getMediaItemAt(i)?.mediaId == item.id
-                }
-            } ?: -1
-
+        val index = currentPlaylist.indexOfFirst { it.id == item.id }
         if (index != -1) {
             controller?.seekToDefaultPosition(index)
             controller?.play()
-
-            _mediaState.value =
-                _mediaState.value.copy(currentItem = item, isPlaying = true)
         }
     }
 
