@@ -9,7 +9,8 @@ sealed class PlaybackItem {
     data class SurahItem(
         val surahId: Int,
         override val title: String,
-        override val url: String
+        override val url: String,
+        val reciterName: String,
     ) : PlaybackItem() {
         override val id: String = "surah_$surahId"
     }

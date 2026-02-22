@@ -68,7 +68,7 @@ fun MediaController(
 
                     Text(
                         text = when (currentItem) {
-                            is PlaybackItem.SurahItem -> "Surah Recitation"
+                            is PlaybackItem.SurahItem -> currentItem.reciterName
                             is PlaybackItem.RadioItem -> "Live Radio"
                         },
                         style = MaterialTheme.typography.bodySmall,

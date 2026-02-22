@@ -72,6 +72,7 @@ fun ReciterScreen(
                 PlaybackItem.SurahItem(
                     surahId = surah.id,
                     title = surah.name,
+                    reciterName = reciter?.name.orEmpty(),
                     url = url
                 )
             } else null
@@ -110,6 +111,7 @@ fun ReciterScreen(
                             PlaybackItem.SurahItem(
                                 surahId = surah.id,
                                 title = surah.name,
+                                reciterName = reciter?.name.orEmpty(),
                                 url = surahUi.server.orEmpty()
                             )
                         )
