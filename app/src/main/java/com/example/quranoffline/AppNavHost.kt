@@ -16,8 +16,8 @@ import com.example.quranoffline.ui.ChapterScript.ChapterScriptScreen
 import com.example.quranoffline.ui.ChapterScript.ChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookScreen
-import com.example.quranoffline.ui.HomeScreen
 import com.example.quranoffline.ui.Radio.RadioScreen
+import com.example.quranoffline.ui.home.HomeScreen
 
 @Composable
 fun AppNavHost(
