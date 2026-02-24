@@ -17,7 +17,7 @@ import com.example.quranoffline.ui.ChapterScript.ChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookScreen
 import com.example.quranoffline.ui.HomeScreen
-import com.example.quranoffline.ui.RadioStationsScreen.RadioStationsScreen
+import com.example.quranoffline.ui.Radio.RadioScreen
 
 @Composable
 fun AppNavHost(
@@ -36,8 +36,8 @@ fun AppNavHost(
             )
         }
 
-        composable<RadioStations> {
-            RadioStationsScreen(
+        composable<Radio> {
+            RadioScreen(
                 modifier = Modifier.systemBarsPadding()
             )
         }

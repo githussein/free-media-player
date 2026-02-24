@@ -12,7 +12,7 @@ object AllReciter
 data class Reciter(val reciterId: String)
 
 @Serializable
-object RadioStations
+object Radio
 
 @Serializable
 object Chapters

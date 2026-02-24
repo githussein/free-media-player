@@ -24,5 +24,5 @@ interface Mp3QuranApi {
     @GET("radios")
     suspend fun getRadioStations(
         @Query("language") language: String = "eng"
-    ): RadioStationsResponse
+    ): RadioResponse
 }

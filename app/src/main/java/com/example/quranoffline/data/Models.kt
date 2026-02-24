@@ -54,4 +54,4 @@ data class Radio(
 
 data class ReciterResponse(val reciters: List<Reciter>)
 data class SurahResponse(val suwar: List<Surah>)
-data class RadioStationsResponse(val radios: List<Radio>)
+data class RadioResponse(val radios: List<Radio>)
