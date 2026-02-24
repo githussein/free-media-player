@@ -44,7 +44,7 @@ import com.example.quranoffline.AllReciter
 import com.example.quranoffline.Books
 import com.example.quranoffline.Chapters
 import com.example.quranoffline.R
-import com.example.quranoffline.RadioStations
+import com.example.quranoffline.Radio
 import com.example.quranoffline.data.Moshaf
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.ui.components.ComponentInfoItem
@@ -82,8 +82,8 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
         Text("Tilawah App", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(24.dp))
 
-        ComponentSectionHeader("Radio Stations", "view all") {
-            navController.navigate(RadioStations)
+        ComponentSectionHeader("Radios", "more>") {
+            navController.navigate(Radio)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -101,7 +101,7 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
         Spacer(modifier = modifier.height(32.dp))
 
 
-        ComponentSectionHeader("Reciters", "view all") {
+        ComponentSectionHeader("Reciters", "more") {
             navController.navigate(AllReciter)
         }
         Spacer(modifier = Modifier.height(8.dp))

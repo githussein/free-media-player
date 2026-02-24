@@ -1,4 +1,4 @@
-package com.example.quranoffline.ui.RadioStationsScreen
+package com.example.quranoffline.ui.Radio
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,12 +25,12 @@ import com.example.quranoffline.ui.components.ComponentLoadingState
 import com.example.quranoffline.ui.components.ComponentRadioPoster
 
 @Composable
-fun RadioStationsScreen(
+fun RadioScreen(
     modifier: Modifier,
-    viewModel: RadioStationsViewModel = hiltViewModel(),
+    radioViewModel: RadioViewModel = hiltViewModel(),
     mediaViewModel: MediaViewModel = hiltViewModel()
 ) {
-    val resultState by viewModel.resultState.collectAsState()
+    val resultState by radioViewModel.resultState.collectAsState()
     val scrollState = rememberScrollState()
 
     when (resultState) {
