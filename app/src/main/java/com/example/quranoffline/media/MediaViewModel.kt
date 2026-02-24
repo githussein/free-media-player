@@ -8,6 +8,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import com.example.quranoffline.data.Radio
 import com.example.quranoffline.data.Surah
 import com.example.quranoffline.data.SurahUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -112,6 +113,30 @@ class MediaViewModel @Inject constructor(
 
         setPlaylist(playbackList, startIndex)
         play(playbackList[startIndex])
+    }
+
+    fun playRadio(radio: Radio) {
+        val radioItem = PlaybackItem.RadioItem(
+            radioId = radio.id,
+            title = radio.name,
+            url = radio.url
+        )
+
+        val mediaItem = MediaItem.Builder()
+            .setUri(radioItem.url)
+            .setMediaId(radioItem.id)
+            .setTag(radioItem)
+            .build()
+
+        controller?.clearMediaItems()
+        controller?.setMediaItem(mediaItem)
+        controller?.prepare()
+        controller?.play()
+
+        _mediaState.value = _mediaState.value.copy(
+            currentItem = radioItem,
+            isPlaying = true
+        )
     }
 
     fun pause() = controller?.pause()

@@ -29,7 +29,12 @@ import androidx.compose.ui.unit.sp
 import com.example.quranoffline.R
 
 @Composable
-fun ComponentRadioPoster(modifier: Modifier, stationName: String, isHome: Boolean = true, imageId: Int = R.drawable.masjid3) {
+fun ComponentRadioPoster(
+    modifier: Modifier,
+    stationName: String,
+    isHome: Boolean = true,
+    imageId: Int = R.drawable.masjid3
+) {
     val posterHeight = if (isHome) 180.dp else 300.dp
     Column(
         modifier = modifier,
@@ -68,6 +73,13 @@ fun ComponentRadioPoster(modifier: Modifier, stationName: String, isHome: Boolea
 
         Spacer(Modifier.height(8.dp))
 
-        Text(stationName, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(
+            stationName,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

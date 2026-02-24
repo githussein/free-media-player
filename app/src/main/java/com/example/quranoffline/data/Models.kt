@@ -51,3 +51,7 @@ data class Radio(
     val name: String,
     val url: String
 )
+
+data class ReciterResponse(val reciters: List<Reciter>)
+data class SurahResponse(val suwar: List<Surah>)
+data class RadioStationsResponse(val radios: List<Radio>)
