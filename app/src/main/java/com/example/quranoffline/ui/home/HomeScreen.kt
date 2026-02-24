@@ -1,5 +1,6 @@
-package com.example.quranoffline.ui
+package com.example.quranoffline.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.quranoffline.AllReciter
 import com.example.quranoffline.Books
@@ -47,6 +50,7 @@ import com.example.quranoffline.R
 import com.example.quranoffline.Radio
 import com.example.quranoffline.data.Moshaf
 import com.example.quranoffline.data.Reciter
+import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.ui.components.ComponentInfoItem
 import com.example.quranoffline.ui.components.ComponentRadioPoster
 import com.example.quranoffline.ui.components.ComponentScriptPoster
@@ -60,6 +64,9 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
     val verticalScrollState = rememberScrollState()
     var showModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val mediaViewModel: MediaViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
+    val radios by homeViewModel.suggestedRadios.collectAsState()
 
     Column(
         modifier = modifier
@@ -87,16 +94,24 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
         }
         Spacer(modifier = Modifier.height(8.dp))
 
+        val images = listOf(R.drawable.masjid1, R.drawable.masjid2, R.drawable.masjid3)
         val scrollState = rememberScrollState()
+
         Row(
             modifier = Modifier
                 .horizontalScroll(scrollState)
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ComponentRadioPoster(modifier = modifier, imageId = R.drawable.masjid2, stationName = "Khalifa altunaiji")
-            ComponentRadioPoster(modifier = modifier, imageId = R.drawable.masjid7, stationName = "Maher Almeaqli")
-            ComponentRadioPoster(modifier = modifier, imageId = R.drawable.masjid5, stationName = "Shaik Abu bakr Alshatri")
+            radios.forEachIndexed { index, radio ->
+                ComponentRadioPoster(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .clickable { mediaViewModel.playRadio(radio) },
+                    stationName = radio.name,
+                    imageId = images.getOrElse(index) { R.drawable.masjid1 }
+                )
+            }
         }
         Spacer(modifier = modifier.height(32.dp))
 
@@ -173,7 +188,6 @@ fun HomeScreen(modifier: Modifier, navController: NavController) {
 }
 
 
-
 @Composable
 fun InfoSheetContent(onItemClick: (String?) -> Unit) {
     Column(
@@ -181,7 +195,12 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Information", fontSize = 32.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 16.dp))
+        Text(
+            "Information",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
         Text("App", color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Column(
@@ -246,7 +265,7 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
 }
 
 
-fun openUrl(context: android.content.Context, url: String?) {
+fun openUrl(context: Context, url: String?) {
     url?.let {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
         context.startActivity(intent)
