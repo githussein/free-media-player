@@ -37,7 +37,7 @@ fun ComponentRadioPoster(
 ) {
     val posterHeight = if (isHome) 180.dp else 300.dp
     Column(
-        modifier = modifier,
+        modifier = modifier.width(200.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
@@ -74,7 +74,7 @@ fun ComponentRadioPoster(
         Spacer(Modifier.height(8.dp))
 
         Text(
-            stationName,
+            stationName.removePrefix("Radio ").trim(),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
