@@ -47,8 +47,8 @@ import com.example.quranoffline.media.PlaybackItem
 fun ReciterScreen(
     modifier: Modifier,
     reciterId: String,
-    mediaViewModel: MediaViewModel,
-    viewModel: ReciterViewModel = hiltViewModel()
+    viewModel: ReciterViewModel = hiltViewModel(),
+    mediaViewModel: MediaViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(reciterId) {

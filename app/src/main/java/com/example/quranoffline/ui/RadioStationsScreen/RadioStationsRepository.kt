@@ -1,7 +1,7 @@
 package com.example.quranoffline.ui.RadioStationsScreen
 
+import com.example.quranoffline.data.Mp3QuranApi
 import com.example.quranoffline.data.RadioStationsResponse
-import com.example.quranoffline.data.RecitationService
 import javax.inject.Inject
 
 interface IRadioStationRepository {
@@ -9,7 +9,10 @@ interface IRadioStationRepository {
 }
 
 class RadioStationsRepository @Inject constructor(
-    private val apiService: RecitationService
+    private val mp3QuranApi: Mp3QuranApi
 ) : IRadioStationRepository {
-    override suspend fun getRadioStations(): RadioStationsResponse = apiService.api.getRadioStations()
+
+    override suspend fun getRadioStations(): RadioStationsResponse {
+        return mp3QuranApi.getRadioStations()
+    }
 }

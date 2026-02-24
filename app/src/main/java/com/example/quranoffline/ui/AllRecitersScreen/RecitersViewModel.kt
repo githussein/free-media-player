@@ -5,7 +5,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quranoffline.data.RecitationService
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.ReciterResponse
 import com.example.quranoffline.data.Surah
@@ -62,7 +61,7 @@ class ReciterViewModel @Inject constructor(
 
                 val surahList = fetchSurahList()
 
-                val surahNameList = availableSurahId?.mapNotNull { surahId ->
+                val surahNameList = availableSurahId?.map { surahId ->
                     val surah = surahList.firstOrNull { it.id == surahId }
                     SurahUi(surah = surah, server = response.reciters.firstOrNull()?.moshaf?.firstOrNull()?.server?.formatServerUrl(surahId))
                 }
@@ -76,7 +75,7 @@ class ReciterViewModel @Inject constructor(
 
     suspend fun fetchSurahList(): List<Surah> {
         return try {
-            val response = RecitationService.api.getSurahName()
+            val response = repository.getSurahList()
             response.suwar
         } catch (e: Exception) {
             Log.e("ReciterViewModel", "Error fetching surahs: ${e.message}")

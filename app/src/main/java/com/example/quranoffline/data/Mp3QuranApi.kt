@@ -17,7 +17,7 @@ interface Mp3QuranApi {
     ): ReciterResponse
 
     @GET("suwar")
-    suspend fun getSurahName(
+    suspend fun getSurahList(
         @Query("language") language: String = "eng",
     ): SurahResponse
 

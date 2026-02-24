@@ -1,5 +1,6 @@
 package com.example.quranoffline.ui.RadioStationsScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,13 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.quranoffline.data.Radio
+import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.ui.components.ComponentLoadingState
 import com.example.quranoffline.ui.components.ComponentRadioPoster
 
 @Composable
 fun RadioStationsScreen(
     modifier: Modifier,
-    viewModel: RadioStationsViewModel = hiltViewModel()
+    viewModel: RadioStationsViewModel = hiltViewModel(),
+    mediaViewModel: MediaViewModel = hiltViewModel()
 ) {
     val resultState by viewModel.resultState.collectAsState()
     val scrollState = rememberScrollState()
@@ -41,34 +44,54 @@ fun RadioStationsScreen(
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp), text = "Radio Stations", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                text = "Radios",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-            val radioStations = (resultState as RadiosResultState.Success).response.radios.take(20)
-            RadioStationsGrid(radioStations)
+            val radioStations =
+                (resultState as RadiosResultState.Success).response.radios.take(20)
+
+            RadioStationsGrid(
+                stations = radioStations,
+                onRadioClick = { radio ->
+                    mediaViewModel.playRadio(radio)
+                }
+            )
         }
 
         is RadiosResultState.Failure -> Text("error")
     }
-
 }
 
 @Composable
-fun RadioStationsGrid(elements: List<Radio>) {
+fun RadioStationsGrid(
+    stations: List<Radio>,
+    onRadioClick: (Radio) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        elements.chunked(2).forEach { rowElements ->
+        stations.chunked(2).forEach { rowStations ->
             Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                rowElements.forEach { element ->
-                    ComponentRadioPoster(Modifier.weight(1f), element.name, false)
+                rowStations.forEach { station ->
+                    ComponentRadioPoster(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { onRadioClick(station) },
+                        stationName = station.name,
+                        isHome = false
+                    )
                 }
-                if (rowElements.size == 1) {
+
+                if (rowStations.size == 1) {
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
