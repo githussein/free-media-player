@@ -10,14 +10,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.quranoffline.media.MediaViewModel
-import com.example.quranoffline.ui.AllRecitersScreen.AllRecitersScreen
-import com.example.quranoffline.ui.AllRecitersScreen.ReciterScreen
 import com.example.quranoffline.ui.ChapterScript.ChapterScriptScreen
 import com.example.quranoffline.ui.ChapterScript.ChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookScreen
 import com.example.quranoffline.ui.Radio.RadioScreen
 import com.example.quranoffline.ui.home.HomeScreen
+import com.example.quranoffline.ui.reciters.AllRecitersScreen
+import com.example.quranoffline.ui.reciters.ReciterScreen
 
 @Composable
 fun AppNavHost(

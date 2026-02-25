@@ -1,4 +1,4 @@
-package com.example.quranoffline.ui.AllRecitersScreen
+package com.example.quranoffline.ui.reciters
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
