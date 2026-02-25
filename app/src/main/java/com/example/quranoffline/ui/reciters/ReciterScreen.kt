@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.quranoffline.data.Moshaf
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.Surah
 import com.example.quranoffline.media.MediaState
@@ -57,6 +58,7 @@ fun ReciterScreen(
     }
 
     val reciter = viewModel.selectedReciter.value
+    val selectedMoshaf by viewModel.selectedMoshaf.collectAsState()
     val surahList by viewModel.surahList.collectAsState()
     val mediaState by mediaViewModel.mediaState.collectAsState()
 
@@ -75,7 +77,13 @@ fun ReciterScreen(
         }
 
         if (reciter?.moshaf != null && reciter.moshaf.size > 1) {
-            item { ReciterDropdownMenu(reciter = reciter) }
+            item {
+                ReciterDropdownMenu(
+                    reciter = reciter,
+                    selectedMoshaf = selectedMoshaf,
+                    onMoshafSelected = { viewModel.selectMoshaf(it) }
+                )
+            }
         }
 
         surahList.forEach { surahUi ->
@@ -101,26 +109,24 @@ fun ReciterScreen(
 @Composable
 fun ReciterDropdownMenu(
     reciter: Reciter,
-    modifier: Modifier = Modifier
+    selectedMoshaf: Moshaf?,
+    onMoshafSelected: (Moshaf) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val moshafList = reciter.moshaf.map { it.name.substringBefore("-") }
-    var selectedMoshaf by remember { mutableStateOf<String?>(null) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
-        modifier = modifier
+        modifier = Modifier
     ) {
         TextField(
-            value = selectedMoshaf ?: "Select a Moshaf",
-            onValueChange = {}, // todo update available SurahList
+            value = selectedMoshaf?.name ?: "Change Rewayah",
+            onValueChange = {},
             readOnly = true,
-
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "arrow down icon"
+                    contentDescription = null
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
@@ -130,20 +136,18 @@ fun ReciterDropdownMenu(
                 errorIndicatorColor = Color.Transparent
             ),
             shape = RoundedCornerShape(50),
-            modifier = Modifier
-                .menuAnchor()
-                .clickable { expanded = true }
+            modifier = Modifier.menuAnchor()
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            moshafList.forEach { moshafName ->
+            reciter.moshaf.forEach { moshaf ->
                 DropdownMenuItem(
-                    text = { Text(text = moshafName) },
+                    text = { Text(text = moshaf.name) },
                     onClick = {
-                        selectedMoshaf = moshafName
+                        onMoshafSelected(moshaf)
                         expanded = false
                     }
                 )
