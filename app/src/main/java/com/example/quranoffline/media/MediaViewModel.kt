@@ -24,7 +24,6 @@ class MediaViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var controller: MediaController? = null
-
     private val _mediaState = MutableStateFlow(MediaState())
     val mediaState: StateFlow<MediaState> = _mediaState.asStateFlow()
     private var currentPlaylist: List<PlaybackItem> = emptyList()
@@ -44,7 +43,6 @@ class MediaViewModel @Inject constructor(
                 controller = controllerFuture.get()
 
                 controller?.addListener(object : Player.Listener {
-
                     override fun onIsPlayingChanged(isPlaying: Boolean) {
                         _mediaState.value = _mediaState.value.copy(isPlaying = isPlaying)
 
@@ -57,6 +55,14 @@ class MediaViewModel @Inject constructor(
                         }
                     }
 
+                    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                        val index = controller?.currentMediaItemIndex ?: return
+                        if (index in currentPlaylist.indices) {
+                            _mediaState.value =
+                                _mediaState.value.copy(currentItem = currentPlaylist[index])
+                        }
+                    }
+
                     override fun onPlaybackStateChanged(state: Int) {
                         val loading = state == Player.STATE_BUFFERING
                         _mediaState.value = _mediaState.value.copy(isLoading = loading)
@@ -66,7 +72,6 @@ class MediaViewModel @Inject constructor(
             ContextCompat.getMainExecutor(context)
         )
     }
-
 
     fun setPlaylist(list: List<PlaybackItem>, startIndex: Int = 0) {
         currentPlaylist = list
@@ -140,7 +145,9 @@ class MediaViewModel @Inject constructor(
     }
 
     fun pause() = controller?.pause()
+
     fun resume() = controller?.play()
+
     fun stop() {
         controller?.stop()
         _mediaState.value = MediaState()
