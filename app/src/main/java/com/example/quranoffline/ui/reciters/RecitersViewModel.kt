@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.quranoffline.data.Moshaf
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.ReciterResponse
 import com.example.quranoffline.data.Surah
@@ -28,6 +29,9 @@ class ReciterViewModel @Inject constructor(
 
     private val _surahList = MutableStateFlow<List<SurahUi>>(emptyList())
     val surahList = _surahList.asStateFlow()
+
+    private val _selectedMoshaf = MutableStateFlow<Moshaf?>(null)
+    val selectedMoshaf = _selectedMoshaf.asStateFlow()
 
 
     init {
@@ -53,23 +57,46 @@ class ReciterViewModel @Inject constructor(
             _resultState.emit(RecitationsResultState.Loading)
             try {
                 val response = repository.getReciterById(reciterId = id)
+                val reciter = response.reciters.firstOrNull()
 
                 _selectedReciter.value = response.reciters.firstOrNull()
                 _resultState.emit(RecitationsResultState.Success(response))
+                _selectedMoshaf.value = reciter?.moshaf?.firstOrNull()
 
-                val availableSurahId = response.reciters.firstOrNull()?.moshaf?.firstOrNull()?.surah_list?.split(",")?.map { it.toInt() }?.toList()
-
-                val surahList = fetchSurahList()
-
-                val surahNameList = availableSurahId?.map { surahId ->
-                    val surah = surahList.firstOrNull { it.id == surahId }
-                    SurahUi(surah = surah, server = response.reciters.firstOrNull()?.moshaf?.firstOrNull()?.server?.formatServerUrl(surahId))
-                }
-                _surahList.emit(surahNameList.orEmpty())
-
+                buildSurahList()
             } catch (e: Exception) {
                 _resultState.emit(RecitationsResultState.Failure(e))
             }
+        }
+    }
+
+    fun selectMoshaf(moshaf: Moshaf) {
+        _selectedMoshaf.value = moshaf
+        buildSurahList()
+    }
+
+    private fun buildSurahList() {
+        viewModelScope.launch {
+
+            val moshaf = _selectedMoshaf.value ?: return@launch
+
+            val availableSurahId = moshaf.surah_list
+                .split(",")
+                .mapNotNull { it.toIntOrNull() }
+
+            val allSurahs = fetchSurahList()
+
+            val surahUiList = availableSurahId.mapNotNull { surahId ->
+                val surah = allSurahs.firstOrNull { it.id == surahId }
+                surah?.let {
+                    SurahUi(
+                        surah = it,
+                        server = moshaf.server.formatServerUrl(surahId)
+                    )
+                }
+            }
+
+            _surahList.emit(surahUiList)
         }
     }
 
