@@ -1,4 +1,4 @@
-package com.example.quranoffline.ui.AllRecitersScreen
+package com.example.quranoffline.ui.reciters
 
 import android.util.Log
 import androidx.compose.runtime.State

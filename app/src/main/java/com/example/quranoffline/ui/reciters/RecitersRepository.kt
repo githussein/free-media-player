@@ -1,4 +1,4 @@
-package com.example.quranoffline.ui.AllRecitersScreen
+package com.example.quranoffline.ui.reciters
 
 import com.example.quranoffline.data.Mp3QuranApi
 import com.example.quranoffline.data.ReciterResponse
