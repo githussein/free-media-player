@@ -60,11 +60,14 @@ import com.example.quranoffline.ui.components.ComposeReciterItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier, navController: NavController) {
+fun HomeScreen(
+    modifier: Modifier,
+    navController: NavController,
+    mediaViewModel: MediaViewModel
+) {
     val verticalScrollState = rememberScrollState()
     var showModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val mediaViewModel: MediaViewModel = hiltViewModel()
     val homeViewModel: HomeViewModel = hiltViewModel()
     val radios by homeViewModel.suggestedRadios.collectAsState()
 

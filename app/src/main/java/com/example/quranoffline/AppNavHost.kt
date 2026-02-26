@@ -32,13 +32,15 @@ fun AppNavHost(
         composable<Home> {
             HomeScreen(
                 modifier = Modifier.systemBarsPadding(),
-                navController = navController
+                navController = navController,
+                mediaViewModel = mediaViewModel
             )
         }
 
         composable<Radio> {
             RadioScreen(
-                modifier = Modifier.systemBarsPadding()
+                modifier = Modifier.systemBarsPadding(),
+                mediaViewModel = mediaViewModel
             )
         }
 
