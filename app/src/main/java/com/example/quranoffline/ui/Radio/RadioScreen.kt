@@ -27,8 +27,8 @@ import com.example.quranoffline.ui.components.ComponentRadioPoster
 @Composable
 fun RadioScreen(
     modifier: Modifier,
-    radioViewModel: RadioViewModel = hiltViewModel(),
-    mediaViewModel: MediaViewModel = hiltViewModel()
+    mediaViewModel: MediaViewModel,
+    radioViewModel: RadioViewModel = hiltViewModel()
 ) {
     val resultState by radioViewModel.resultState.collectAsState()
     val scrollState = rememberScrollState()
