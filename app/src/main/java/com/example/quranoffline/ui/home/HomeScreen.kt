@@ -63,13 +63,15 @@ import com.example.quranoffline.ui.components.ComposeReciterItem
 fun HomeScreen(
     modifier: Modifier,
     navController: NavController,
+    homeDataViewModel: HomeDataViewModel = hiltViewModel(),
     mediaViewModel: MediaViewModel
 ) {
     val verticalScrollState = rememberScrollState()
     var showModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val homeViewModel: HomeViewModel = hiltViewModel()
-    val radios by homeViewModel.suggestedRadios.collectAsState()
+    val homeDataViewModel: HomeDataViewModel = hiltViewModel()
+    val suggestedRadios by homeDataViewModel.suggestedRadios.collectAsState()
+    val suggestedReciters by homeDataViewModel.suggestedReciters.collectAsState()
 
     Column(
         modifier = modifier
@@ -106,7 +108,7 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            radios.forEachIndexed { index, radio ->
+            suggestedRadios.forEachIndexed { index, radio ->
                 ComponentRadioPoster(
                     modifier = modifier
                         .fillMaxSize()
@@ -124,35 +126,10 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        ComposeReciterItem(
-            Reciter(
-                id = 1,
-                name = "Mahmoud Al-Hussary",
-                letter = "M",
-                moshaf = Moshaf.generateRandomMoshafList()
-            )
-        ) {
-            navController.navigate(com.example.quranoffline.Reciter("118"))
-        }
-        ComposeReciterItem(
-            Reciter(
-                id = 1,
-                name = "Mishary Alafasi",
-                letter = "M",
-                moshaf = Moshaf.generateRandomMoshafList()
-            )
-        ) {
-            navController.navigate(com.example.quranoffline.Reciter("123"))
-        }
-        ComposeReciterItem(
-            Reciter(
-                id = 1,
-                name = "Mohamemed Al-Minshawi",
-                letter = "M",
-                moshaf = Moshaf.generateRandomMoshafList()
-            )
-        ) {
-            navController.navigate(com.example.quranoffline.Reciter("112"))
+        suggestedReciters.forEach { reciter ->
+            ComposeReciterItem(reciter) {
+                navController.navigate(com.example.quranoffline.Reciter(reciter.id.toString()))
+            }
         }
         Spacer(modifier = modifier.height(32.dp))
 
