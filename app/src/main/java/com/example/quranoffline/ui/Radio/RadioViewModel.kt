@@ -11,16 +11,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RadioViewModel @Inject constructor(
-    private val repository: RadioRepository
+    private val repository: IRadioRepository
 ) : ViewModel() {
     private val _resultState = MutableStateFlow<RadiosResultState>(RadiosResultState.Idle)
     val resultState = _resultState.asStateFlow()
 
-    init {
-        fetchRadioStations()
-    }
-
-    private fun fetchRadioStations() {
+    fun fetchRadioStations() {
         viewModelScope.launch {
             _resultState.emit(RadiosResultState.Loading)
 
