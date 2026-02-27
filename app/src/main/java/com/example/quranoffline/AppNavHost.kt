@@ -16,7 +16,7 @@ import com.example.quranoffline.ui.HadithScript.BookChaptersScreen
 import com.example.quranoffline.ui.HadithScript.BookScreen
 import com.example.quranoffline.ui.Radio.RadioScreen
 import com.example.quranoffline.ui.home.HomeScreen
-import com.example.quranoffline.ui.reciters.AllRecitersScreen
+import com.example.quranoffline.ui.reciters.ReciterListScreen
 import com.example.quranoffline.ui.reciters.ReciterScreen
 
 @Composable
@@ -45,7 +45,7 @@ fun AppNavHost(
         }
 
         composable<AllReciter> {
-            AllRecitersScreen(
+            ReciterListScreen(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController
             )
