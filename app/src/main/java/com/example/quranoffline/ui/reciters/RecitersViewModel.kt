@@ -18,10 +18,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReciterViewModel @Inject constructor(
-    private val repository: RecitersRepository
+    private val repository: IRecitersRepository
 ) : ViewModel() {
 
-    private val _resultState = MutableStateFlow<RecitationsResultState>(RecitationsResultState.Idle)
+    private val _resultState = MutableStateFlow<RecitationsResultState>(RecitationsResultState.Loading)
     val resultState = _resultState.asStateFlow()
 
     private val _selectedReciter = mutableStateOf<Reciter?>(null)
@@ -34,14 +34,9 @@ class ReciterViewModel @Inject constructor(
     val selectedMoshaf = _selectedMoshaf.asStateFlow()
 
 
-    init {
-        fetchReciters()
-    }
-
-    private fun fetchReciters() {
+    fun fetchReciters() {
         viewModelScope.launch {
             _resultState.emit(RecitationsResultState.Loading)
-
             try {
                 val response = repository.getAllReciters()
                 _resultState.emit(RecitationsResultState.Success(response))
@@ -59,10 +54,10 @@ class ReciterViewModel @Inject constructor(
                 val response = repository.getReciterById(reciterId = id)
                 val reciter = response.reciters.firstOrNull()
 
-                _selectedReciter.value = response.reciters.firstOrNull()
-                _resultState.emit(RecitationsResultState.Success(response))
+                _selectedReciter.value = reciter
                 _selectedMoshaf.value = reciter?.moshaf?.firstOrNull()
 
+                _resultState.emit(RecitationsResultState.Success(response))
                 buildSurahList()
             } catch (e: Exception) {
                 _resultState.emit(RecitationsResultState.Failure(e))
@@ -77,20 +72,18 @@ class ReciterViewModel @Inject constructor(
 
     private fun buildSurahList() {
         viewModelScope.launch {
-
             val moshaf = _selectedMoshaf.value ?: return@launch
 
-            val availableSurahId = moshaf.surah_list
+            val availableSurahIds = moshaf.surah_list
                 .split(",")
                 .mapNotNull { it.toIntOrNull() }
 
             val allSurahs = fetchSurahList()
 
-            val surahUiList = availableSurahId.mapNotNull { surahId ->
-                val surah = allSurahs.firstOrNull { it.id == surahId }
-                surah?.let {
+            val surahUiList = availableSurahIds.mapNotNull { surahId ->
+                allSurahs.firstOrNull { it.id == surahId }?.let { surah ->
                     SurahUi(
-                        surah = it,
+                        surah = surah,
                         server = moshaf.server.formatServerUrl(surahId)
                     )
                 }
@@ -100,20 +93,15 @@ class ReciterViewModel @Inject constructor(
         }
     }
 
-    suspend fun fetchSurahList(): List<Surah> {
-        return try {
-            val response = repository.getSurahList()
-            response.suwar
-        } catch (e: Exception) {
-            Log.e("ReciterViewModel", "Error fetching surahs: ${e.message}")
-            emptyList()
-        }
+    suspend fun fetchSurahList(): List<Surah> = try {
+        repository.getSurahList().suwar
+    } catch (e: Exception) {
+        Log.e("ReciterViewModel", "Error fetching surahs: ${e.message}")
+        emptyList()
     }
-
 }
 
 sealed interface RecitationsResultState {
-    data object Idle : RecitationsResultState
     data object Loading : RecitationsResultState
     data class Success(val response: ReciterResponse) : RecitationsResultState
     data class Failure(val e: Exception) : RecitationsResultState

@@ -15,9 +15,33 @@ interface IRecitersRepository {
 class RecitersRepository @Inject constructor(
     private val mp3QuranApi: Mp3QuranApi
 ) : IRecitersRepository {
-    override suspend fun getAllReciters(): ReciterResponse = mp3QuranApi.getAllReciters()
-    override suspend fun getReciterById(reciterId: String) =
-        mp3QuranApi.getReciterById(reciterId = reciterId, language = "en")
 
-    override suspend fun getSurahList(): SurahResponse = mp3QuranApi.getSurahList()
+    @Volatile
+    private var cachedAllReciters: ReciterResponse? = null
+
+    @Volatile
+    private var cachedSurahList: SurahResponse? = null
+
+    private val cachedRecitersById = mutableMapOf<String, ReciterResponse>()
+
+    override suspend fun getAllReciters(): ReciterResponse {
+        cachedAllReciters?.let { return it }
+        val response = mp3QuranApi.getAllReciters()
+        cachedAllReciters = response
+        return response
+    }
+
+    override suspend fun getReciterById(reciterId: String): ReciterResponse {
+        cachedRecitersById[reciterId]?.let { return it }
+        val response = mp3QuranApi.getReciterById(reciterId = reciterId, language = "en")
+        cachedRecitersById[reciterId] = response
+        return response
+    }
+
+    override suspend fun getSurahList(): SurahResponse {
+        cachedSurahList?.let { return it }
+        val response = mp3QuranApi.getSurahList()
+        cachedSurahList = response
+        return response
+    }
 }
