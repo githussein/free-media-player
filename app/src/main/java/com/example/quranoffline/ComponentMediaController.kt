@@ -1,6 +1,9 @@
 package com.example.quranoffline
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Pause
@@ -24,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.quranoffline.media.MediaState
@@ -35,95 +42,74 @@ fun MediaController(
     onPlayPauseClick: () -> Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
-    onClose: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     val currentItem = mediaState.currentItem ?: return
 
-    Surface(
-        tonalElevation = 3.dp,
-        shadowElevation = 6.dp,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        modifier = Modifier
+    Box(
+        modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(28.dp))
+                .background(Color(0xFF111111))
+                .padding(vertical = 20.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            IconButton(
+                onClick = onPrevious,
+                modifier = Modifier.size(40.dp)
             ) {
+                Icon(
+                    imageVector = Icons.Default.SkipPrevious,
+                    contentDescription = "Previous",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
 
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = currentItem.title,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFF1DB954))
+                    .clickable { onPlayPauseClick() }
+            ) {
+                if (mediaState.isLoading) {
+                    CircularProgressIndicator(
+                        color = Color.Black,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(28.dp)
                     )
-
-                    Text(
-                        text = when (currentItem) {
-                            is PlaybackItem.SurahItem -> currentItem.reciterName
-                            is PlaybackItem.RadioItem -> "Live Radio"
-                        },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    Icon(
+                        imageVector = if (mediaState.isPlaying)
+                            Icons.Default.Pause
+                        else
+                            Icons.Default.PlayArrow,
+                        contentDescription = "Play Pause",
+                        tint = Color.Black,
+                        modifier = Modifier.size(36.dp)
                     )
-                }
-
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.ExpandMore, contentDescription = "Minimize")
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+            IconButton(
+                onClick = onNext,
+                modifier = Modifier.size(40.dp)
             ) {
-
-                IconButton(onClick = onPrevious) {
-                    Icon(
-                        imageVector = Icons.Default.SkipPrevious,
-                        contentDescription = "Previous"
-                    )
-                }
-
-                FilledIconButton(
-                    onClick = onPlayPauseClick,
-                    modifier = Modifier.size(56.dp)
-                ) {
-                    if (mediaState.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Icon(
-                            imageVector = if (mediaState.isPlaying)
-                                Icons.Default.Pause
-                            else
-                                Icons.Default.PlayArrow,
-                            contentDescription = "Play Pause"
-                        )
-                    }
-                }
-
-                IconButton(onClick = onNext) {
-                    Icon(
-                        imageVector = Icons.Default.SkipNext,
-                        contentDescription = "Next"
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.SkipNext,
+                    contentDescription = "Next",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
             }
         }
     }
