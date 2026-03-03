@@ -95,11 +95,13 @@ fun ReciterScreen(
             item {
                 ComposeSurahItem(
                     surah = surahUi.surah ?: return@item,
+                    reciterId = reciter?.id ?: return@item,
                     mediaState = mediaState,
                     onMediaClick = { surah ->
                         mediaViewModel.playSurah(
                             surah = surah,
-                            reciterName = reciter?.name.orEmpty(),
+                            reciterId = reciter.id,
+                            reciterName = reciter.name,
                             surahList = surahList
                         )
                     }
@@ -150,7 +152,6 @@ fun ReciterDropdownMenu(
             modifier = Modifier
                 .menuAnchor()
                 .padding(horizontal = 16.dp)
-
         )
 
         ExposedDropdownMenu(
@@ -177,12 +178,15 @@ fun ReciterDropdownMenu(
 @Composable
 private fun ComposeSurahItem(
     surah: Surah,
+    reciterId: Int,
     mediaState: MediaState,
     onMediaClick: (Surah) -> Unit
 ) {
     val isPlaying = mediaState.isPlaying &&
             mediaState.currentItem is PlaybackItem.SurahItem &&
-            mediaState.currentItem.surahId == surah.id
+            mediaState.currentItem.surahId == surah.id &&
+            mediaState.currentItem.reciterId == reciterId
+
 
     Column {
         Row(
@@ -209,7 +213,6 @@ private fun ComposeSurahItem(
                     .border(4.dp, Color.Gray, CircleShape)
                     .padding(4.dp),
                 // todo modernize play pause icons
-                // todo fix pause icon for same surah with different reciters
                 imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                 contentDescription = if (isPlaying) "Pause icon" else "Play icon"
             )
