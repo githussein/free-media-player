@@ -1,5 +1,6 @@
 package com.example.quranoffline.ui.reciters
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +33,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,6 +47,7 @@ import com.example.quranoffline.data.Surah
 import com.example.quranoffline.media.MediaState
 import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.media.PlaybackItem
+import com.example.quranoffline.ui.theme.MediaControllerColors
 
 @Composable
 fun ReciterScreen(
@@ -121,6 +126,8 @@ fun ReciterDropdownMenu(
     ) {
         TextField(
             value = selectedMoshaf?.name ?: "Change Rewayah",
+            textStyle = TextStyle(textAlign = TextAlign.Center),
+            maxLines = 1,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {
@@ -129,23 +136,33 @@ fun ReciterDropdownMenu(
                     contentDescription = null
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = MediaControllerColors.OnSurface,
+                unfocusedTextColor = MediaControllerColors.OnSurface,
+                focusedContainerColor = MediaControllerColors.Surface,
+                unfocusedContainerColor = MediaControllerColors.Surface,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 errorIndicatorColor = Color.Transparent
             ),
             shape = RoundedCornerShape(50),
-            modifier = Modifier.menuAnchor()
+            modifier = Modifier
+                .menuAnchor()
+                .padding(horizontal = 16.dp)
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .background(MediaControllerColors.Surface)
+                .padding(horizontal = 16.dp)
         ) {
             reciter.moshaf.forEach { moshaf ->
                 DropdownMenuItem(
-                    text = { Text(text = moshaf.name) },
+                    modifier = Modifier.clip(RoundedCornerShape(24.dp)),
+                    text = { Text(text = moshaf.name, textAlign = TextAlign.Center) },
                     onClick = {
                         onMoshafSelected(moshaf)
                         expanded = false
@@ -190,6 +207,8 @@ private fun ComposeSurahItem(
                 modifier = Modifier
                     .border(4.dp, Color.Gray, CircleShape)
                     .padding(4.dp),
+                // todo modernize play pause icons
+                // todo fix pause icon for same surah with different reciters
                 imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                 contentDescription = if (isPlaying) "Pause icon" else "Play icon"
             )
