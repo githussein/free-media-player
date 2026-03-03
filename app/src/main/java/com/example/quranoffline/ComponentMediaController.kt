@@ -38,12 +38,11 @@ fun MediaController(
     onPlayPauseClick: () -> Unit,
     onNext: () -> Unit,
     onPrevious: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val currentItem = mediaState.currentItem ?: return
 
     Surface(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(28.dp),
@@ -109,7 +108,7 @@ fun MediaController(
                     Box(contentAlignment = Alignment.Center) {
                         if (mediaState.isLoading) {
                             CircularProgressIndicator(
-                                color = MediaControllerColors.OnPrimary,
+                                color = MediaControllerColors.OnSurface,
                                 strokeWidth = 2.dp,
                                 modifier = Modifier.size(22.dp)
                             )
@@ -120,7 +119,7 @@ fun MediaController(
                                 else
                                     Icons.Default.PlayArrow,
                                 contentDescription = "Play Pause",
-                                tint = MediaControllerColors.OnPrimary,
+                                tint = MediaControllerColors.OnSurface,
                                 modifier = Modifier.size(28.dp)
                             )
                         }
