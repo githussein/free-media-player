@@ -97,6 +97,7 @@ class MediaViewModel @Inject constructor(
 
     fun playSurah(
         surah: Surah,
+        reciterId: Int,
         reciterName: String,
         surahList: List<SurahUi>
     ) {
@@ -106,6 +107,7 @@ class MediaViewModel @Inject constructor(
             if (s != null && !url.isNullOrEmpty()) {
                 PlaybackItem.SurahItem(
                     surahId = s.id,
+                    reciterId = reciterId,
                     title = s.name,
                     url = url,
                     reciterName = reciterName

@@ -8,11 +8,12 @@ sealed class PlaybackItem {
 
     data class SurahItem(
         val surahId: Int,
+        val reciterId: Int,
         override val title: String,
         override val url: String,
         val reciterName: String,
     ) : PlaybackItem() {
-        override val id: String = "surah_$surahId"
+        override val id: String = "surah_${reciterId}_$surahId"
     }
 
     data class RadioItem(
