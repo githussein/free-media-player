@@ -1,14 +1,16 @@
 package com.example.quranoffline.ui.reciters
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,8 +21,9 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -158,13 +161,19 @@ fun ReciterDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .background(MediaControllerColors.Surface)
+                .background(MediaControllerColors.OnSurfaceVariantColor)
                 .padding(horizontal = 16.dp)
         ) {
             reciter.moshaf.forEach { moshaf ->
                 DropdownMenuItem(
                     modifier = Modifier.clip(RoundedCornerShape(24.dp)),
-                    text = { Text(text = moshaf.name, textAlign = TextAlign.Center) },
+                    text = {
+                        Text(
+                            text = moshaf.name,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    },
                     onClick = {
                         onMoshafSelected(moshaf)
                         expanded = false
@@ -187,38 +196,62 @@ private fun ComposeSurahItem(
             mediaState.currentItem.surahId == surah.id &&
             mediaState.currentItem.reciterId == reciterId
 
+    val containerColor =
+        if (isPlaying)
+            MaterialTheme.colorScheme.surfaceVariant
+        else
+            Color.Transparent
 
-    Column {
+    Surface(
+        color = containerColor,
+        tonalElevation = if (isPlaying) 2.dp else 0.dp
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onMediaClick(surah) }
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = surah.id.toString(), color = Color.Gray)
+
+            Text(
+                text = surah.id.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
 
             Text(
                 text = surah.name,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .weight(1f),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
-            Icon(
-                modifier = Modifier
-                    .border(4.dp, Color.Gray, CircleShape)
-                    .padding(4.dp),
-                // todo modernize play pause icons
-                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                contentDescription = if (isPlaying) "Pause icon" else "Play icon"
-            )
+            Surface(
+                shape = CircleShape,
+                color = if (isPlaying)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = if (isPlaying)
+                            Icons.Default.Pause
+                        else
+                            Icons.Default.PlayArrow,
+                        contentDescription = null,
+                        tint = if (isPlaying)
+                            MaterialTheme.colorScheme.onPrimary
+                        else
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
-
-        HorizontalDivider(thickness = 0.3.dp)
     }
 }
 
