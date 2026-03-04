@@ -14,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.quranoffline.R
 import com.example.quranoffline.data.Chapter
 
 @Composable
@@ -33,16 +35,29 @@ fun ComponentBookChapterItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Text(text = index, fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(end = 8.dp))
+        Text(
+            text = index,
+            fontSize = 12.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(end = 8.dp)
+        )
 
-        Text(text = chapter.chapterArabic, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        Text(
+            text = chapter.chapterArabic,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
 
         Icon(
             modifier = Modifier.padding(8.dp),
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "arrow icon"
+            contentDescription = stringResource(R.string.icon_arrow)
         )
     }
 
-    HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f), modifier = Modifier.padding(horizontal = 16.dp))
+    HorizontalDivider(
+        thickness = 0.5.dp,
+        color = Color.Gray.copy(alpha = 0.3f),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }

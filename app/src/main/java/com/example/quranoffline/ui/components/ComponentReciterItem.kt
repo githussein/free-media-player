@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +44,7 @@ fun ComposeReciterItem(reciter: Reciter, onReciterClick: (String) -> Unit) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.mic),
-            contentDescription = "photo of a mic",
+            contentDescription = stringResource(R.string.photo_mic),
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .size(50.dp)
@@ -62,7 +63,10 @@ fun ComposeReciterItem(reciter: Reciter, onReciterClick: (String) -> Unit) {
 //                Text(text = "(${it.surah_total}) ${it.name.substringBefore("-")}", maxLines = 1)
 //            }
             Text(
-                "${reciter.moshaf.size} Recitation${if (reciter.moshaf.size > 1) "s" else ""}",
+                "${reciter.moshaf.size} ${
+                    if (reciter.moshaf.size > 1) stringResource(R.string.recitations)
+                    else stringResource(R.string.recitation)
+                }",
                 color = Color.Gray
             )
         }
@@ -70,11 +74,15 @@ fun ComposeReciterItem(reciter: Reciter, onReciterClick: (String) -> Unit) {
         Icon(
             modifier = Modifier.padding(4.dp),
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "arrow icon"
+            contentDescription = stringResource(R.string.icon_arrow)
         )
     }
 
-    HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f), modifier = Modifier.padding(horizontal = 16.dp))
+    HorizontalDivider(
+        thickness = 0.5.dp,
+        color = Color.Gray.copy(alpha = 0.3f),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }
 
 

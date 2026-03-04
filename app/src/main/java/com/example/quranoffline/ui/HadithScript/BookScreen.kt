@@ -9,9 +9,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.quranoffline.BookChapters
+import com.example.quranoffline.R
 import com.example.quranoffline.ui.components.ComponentBookItem
 import com.example.quranoffline.ui.components.ComponentLoadingState
 
@@ -24,8 +26,6 @@ fun BookScreen(
     val resultState by viewModel.resultState.collectAsState()
 
     when (resultState) {
-        BookResultState.Idle -> Text("idle")
-
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success -> LazyColumn(
@@ -46,7 +46,7 @@ fun BookScreen(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("error loading data\nplease try again later")
+            Text(stringResource(R.string.error_loading_data))
         }
     }
 }

@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,7 +83,7 @@ fun HomeScreen(
     ) {
         Icon(
             imageVector = Icons.Default.Info,
-            contentDescription = "play icon",
+            contentDescription = stringResource(R.string.icon_play),
             tint = Color.Gray,
             modifier = modifier
                 .padding(end = 16.dp)
@@ -91,10 +92,10 @@ fun HomeScreen(
                 .clickable { showModal = true }
         )
 
-        Text("Tilawah App", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.app_name), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(24.dp))
 
-        ComponentSectionHeader("Radios", "more>") {
+        ComponentSectionHeader(stringResource(R.string.radios), stringResource(R.string.more)) {
             navController.navigate(Radio)
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -121,7 +122,7 @@ fun HomeScreen(
         Spacer(modifier = modifier.height(32.dp))
 
 
-        ComponentSectionHeader("Reciters", "more") {
+        ComponentSectionHeader(stringResource(R.string.reciters), stringResource(R.string.more)) {
             navController.navigate(AllReciter)
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -134,20 +135,20 @@ fun HomeScreen(
         Spacer(modifier = modifier.height(32.dp))
 
 
-        ComponentSectionHeader("Quran & Hadith Scripts", null) {}
+        ComponentSectionHeader(stringResource(R.string.scripts), null) {}
         Spacer(modifier = Modifier.height(8.dp))
         ComponentScriptPoster(
             modifier = modifier,
-            title = "Quran\n",
-            description = "with Arabic script and \nEnglish translation",
+            title = "${stringResource(R.string.quran)}\n",
+            description = stringResource(R.string.quran_script_poster),
             painterResourceId = R.drawable.moshaf
         ) {
             navController.navigate(Chapters)
         }
         ComponentScriptPoster(
             modifier = modifier,
-            title = "Hadith\n",
-            description = "with Arabic script and \nEnglish translation",
+            title = "${stringResource(R.string.hadith)}\n",
+            description = stringResource(R.string.hadith_script_poster),
             painterResourceId = R.drawable.hadith
         ) {
             navController.navigate(Books)
@@ -176,12 +177,12 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
             .padding(16.dp)
     ) {
         Text(
-            "Information",
+            stringResource(R.string.info),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Text("App", color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
+        Text(stringResource(R.string.app), color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Column(
             modifier = Modifier
@@ -190,13 +191,13 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
                 .padding(horizontal = 16.dp)
         ) {
             ComponentInfoItem(
-                title = "About",
+                title = stringResource(R.string.about),
                 icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 onClick = { onItemClick(null) }
             )
             HorizontalDivider(thickness = 0.3.dp)
             ComponentInfoItem(
-                title = "Contact us",
+                title = stringResource(R.string.contact_us),
                 icon = Icons.Default.Email,
                 onClick = { onItemClick("https://amrraafat89.wixsite.com/quranvoiceapp/contact") }
             )
@@ -204,7 +205,7 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Resources", color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
+        Text(stringResource(R.string.resources), color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Column(
             modifier = Modifier
@@ -213,28 +214,31 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
                 .padding(horizontal = 16.dp)
         ) {
             ComponentInfoItem(
-                title = "Quran API",
+                title = stringResource(R.string.quran_script),
                 subtitle = "quranapi.pages.dev",
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
                 onClick = { onItemClick("https://quranapi.pages.dev") }
             )
             HorizontalDivider(thickness = 0.3.dp)
+
             ComponentInfoItem(
-                title = "MP3 Quran",
+                title = stringResource(R.string.quran_recitations),
                 subtitle = "mp3quran.net",
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
                 onClick = { onItemClick("https://mp3quran.net/eng/api") }
             )
+
             HorizontalDivider(thickness = 0.3.dp)
             ComponentInfoItem(
-                title = "Quran Tafseer",
+                title = stringResource(R.string.quran_tafseer),
                 subtitle = "api.quran-tafseer.co",
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
                 onClick = { onItemClick("http://api.quran-tafseer.com/en/docs/") }
             )
             HorizontalDivider(thickness = 0.3.dp)
+
             ComponentInfoItem(
-                title = "Hadith API",
+                title = stringResource(R.string.hadith_scripts),
                 subtitle = "hadithapi.com",
                 icon = Icons.AutoMirrored.Filled.ExitToApp,
                 onClick = { onItemClick("https://hadithapi.com") }

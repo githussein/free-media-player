@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ChaptersViewModel @Inject constructor(
     private val repository: ChaptersRepository
 ) : ViewModel() {
-    private val _resultState = MutableStateFlow<ChaptersResultState>(ChaptersResultState.Idle)
+    private val _resultState = MutableStateFlow<ChaptersResultState>(ChaptersResultState.Loading)
     val resultState = _resultState.asStateFlow()
 
     private val _chapterScript = MutableStateFlow<ChapterScriptResponse?>(null)
@@ -58,7 +58,6 @@ class ChaptersViewModel @Inject constructor(
 }
 
 sealed interface ChaptersResultState {
-    data object Idle : ChaptersResultState
     data object Loading : ChaptersResultState
     data class Success(val response: ChaptersResponse) : ChaptersResultState
     data class ScriptSuccess(val response: ChapterScriptResponse) : ChaptersResultState

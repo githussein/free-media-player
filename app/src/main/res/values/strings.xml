@@ -1,3 +1,49 @@
 <resources>
-    <string name="app_name">Quran Offline</string>
+    <string name="app_name">Tilawah Quran</string>
+    <string name="info">Information</string>
+    <string name="app">App</string>
+    <string name="about">About</string>
+    <string name="contact_us">Contact us</string>
+    <string name="resources">Resources</string>
+    <string name="icon">icon</string>
+    <string name="play">Play</string>
+    <string name="icon_play">icon play</string>
+    <string name="icon_pause">icon pause</string>
+    <string name="icon_next">icon next</string>
+    <string name="icon_previous">icon previous</string>
+    <string name="icon_play_pause">icon play pause</string>
+    <string name="icon_arrow">icon stop</string>
+    <string name="pause">Pause</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="error">Error</string>
+    <string name="live_radio">Live Radio</string>
+    <!-- Home Screen -->
+    <string name="reciters">Reciters</string>
+    <string name="radios">Radios</string>
+    <string name="quran">Quran</string>
+    <string name="hadith">Hadith</string>
+    <string name="more">more ></string>
+    <string name="scripts">Scripts</string>
+    <string name="quran_script">Quran Script</string>
+    <string name="hadith_scripts">Hadith Scripts</string>
+    <string name="quran_recitations">Quran Recitations</string>
+    <string name="quran_tafseer">Quran Tafseer</string>
+    <string name="quran_script_poster">with Arabic script and \nEnglish translation</string>
+    <string name="hadith_script_poster">with Arabic script and \nEnglish translation</string>
+    <string name="read_more">Read more</string>
+    <string name="tafseer">Tafseer</string>
+    <string name="photo_moshaf">photo of moshaf</string>
+    <string name="photo_masjid">photo of masjid</string>
+    <!-- Reciter Screen -->
+    <string name="photo_mic">photo of mic</string>
+    <string name="recitation">recitation</string>
+    <string name="recitations">recitations</string>
+
+    <!-- Quran Scripts Screen -->
+    <string name="verses">verses</string>
+    <!-- Hadith Scripts Screen -->
+    <string name="error_loading_data">error loading data \nplease try again later</string>
+    <string name="hadiths">hadiths</string>
+    <string name="chapters">chapters</string>
 </resources>

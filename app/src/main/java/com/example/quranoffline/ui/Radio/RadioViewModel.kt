@@ -13,7 +13,7 @@ import javax.inject.Inject
 class RadioViewModel @Inject constructor(
     private val repository: IRadioRepository
 ) : ViewModel() {
-    private val _resultState = MutableStateFlow<RadiosResultState>(RadiosResultState.Idle)
+    private val _resultState = MutableStateFlow<RadiosResultState>(RadiosResultState.Loading)
     val resultState = _resultState.asStateFlow()
 
     fun fetchRadioStations() {
@@ -32,7 +32,6 @@ class RadioViewModel @Inject constructor(
 
 
 sealed interface RadiosResultState {
-    data object Idle : RadiosResultState
     data object Loading : RadiosResultState
     data class Success(val response: RadioResponse) : RadiosResultState
     data class Failure(val e: Exception) : RadiosResultState

@@ -18,12 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.quranoffline.R
 
 @Composable
-fun ComponentScriptPoster(modifier: Modifier, title: String, description: String, painterResourceId: Int, onScriptPosterClick: () -> Unit) {
+fun ComponentScriptPoster(
+    modifier: Modifier,
+    title: String,
+    description: String,
+    painterResourceId: Int,
+    onScriptPosterClick: () -> Unit
+) {
     ComponentGradientBox(
         modifier = modifier.clickable { onScriptPosterClick() }
     ) {
@@ -45,13 +53,13 @@ fun ComponentScriptPoster(modifier: Modifier, title: String, description: String
                     shape = RoundedCornerShape(100),
                     modifier = modifier.padding(top = 8.dp),
                 ) {
-                    Text("Read more", color = Color.Black)
+                    Text(stringResource(R.string.read_more), color = Color.Black)
                 }
             }
 
             Image(
                 painter = painterResource(id = painterResourceId),
-                contentDescription = "photo of a quran",
+                contentDescription = stringResource(R.string.photo_moshaf),
                 contentScale = ContentScale.FillBounds,
                 modifier = modifier
                     .padding(20.dp)

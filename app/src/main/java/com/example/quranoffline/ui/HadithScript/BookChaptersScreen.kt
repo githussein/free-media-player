@@ -13,12 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.quranoffline.R
 import com.example.quranoffline.ui.components.ComponentBookChapterItem
 import com.example.quranoffline.ui.components.ComponentGradientBox
 import com.example.quranoffline.ui.components.ComponentLoadingState
@@ -39,8 +41,6 @@ fun BookChaptersScreen(
     val book by viewModel.book.collectAsState()
 
     when (resultState) {
-        BookResultState.Idle -> Text("idle")
-
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success, is BookResultState.BookSuccess -> LazyColumn(
@@ -69,7 +69,7 @@ fun BookChaptersScreen(
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         Text(
-                            text = "${selectedBook?.chapters_count.orEmpty()} Chapters - ${selectedBook?.hadiths_count.orEmpty()} Hadiths",
+                            text = "${selectedBook?.chapters_count.orEmpty()} ${stringResource(R.string.chapters)} - ${selectedBook?.hadiths_count.orEmpty()} ${stringResource(R.string.hadiths)}",
                             color = Color.White,
                             fontSize = 14.sp
                         )
@@ -92,7 +92,7 @@ fun BookChaptersScreen(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("Error loading data\nplease try again later")
+            Text(stringResource(R.string.error_loading_data))
         }
     }
 }

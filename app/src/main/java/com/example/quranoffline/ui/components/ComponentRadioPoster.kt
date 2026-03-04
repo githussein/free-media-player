@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,7 +49,7 @@ fun ComponentRadioPoster(
         ) {
             Image(
                 painter = painterResource(id = imageId),
-                contentDescription = "photo of a masjid",
+                contentDescription = stringResource(R.string.photo_masjid),
                 contentScale = ContentScale.FillBounds
             )
 
@@ -61,7 +62,7 @@ fun ComponentRadioPoster(
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "play icon",
+                    contentDescription = stringResource(R.string.icon_play),
                     tint = Color.White,
                     modifier = Modifier
                         .size(36.dp)

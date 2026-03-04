@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.quranoffline.media.MediaState
@@ -73,7 +74,7 @@ fun MediaController(
                 Text(
                     text = when (currentItem) {
                         is PlaybackItem.SurahItem -> currentItem.reciterName
-                        is PlaybackItem.RadioItem -> "Live Radio"
+                        is PlaybackItem.RadioItem -> stringResource(R.string.live_radio)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MediaControllerColors.OnSurfaceVariantColor,
@@ -91,7 +92,7 @@ fun MediaController(
                 IconButton(onClick = onPrevious) {
                     Icon(
                         imageVector = Icons.Default.SkipPrevious,
-                        contentDescription = "Previous",
+                        contentDescription = stringResource(R.string.icon_previous),
                         tint = MediaControllerColors.OnSurface,
                         modifier = Modifier.size(26.dp)
                     )
@@ -118,7 +119,7 @@ fun MediaController(
                                     Icons.Default.Pause
                                 else
                                     Icons.Default.PlayArrow,
-                                contentDescription = "Play Pause",
+                                contentDescription = stringResource(R.string.icon_play_pause),
                                 tint = MediaControllerColors.OnSurface,
                                 modifier = Modifier.size(28.dp)
                             )
@@ -131,7 +132,7 @@ fun MediaController(
                 IconButton(onClick = onNext) {
                     Icon(
                         imageVector = Icons.Default.SkipNext,
-                        contentDescription = "Next",
+                        contentDescription = stringResource(R.string.icon_next),
                         tint = MediaControllerColors.OnSurface,
                         modifier = Modifier.size(26.dp)
                     )

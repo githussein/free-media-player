@@ -16,7 +16,7 @@ import javax.inject.Inject
 class BookViewModel @Inject constructor(
     private val repository: BookRepository
 ) : ViewModel() {
-    private val _resultState = MutableStateFlow<BookResultState>(BookResultState.Idle)
+    private val _resultState = MutableStateFlow<BookResultState>(BookResultState.Loading)
     val resultState = _resultState.asStateFlow()
 
     private val _bookList = MutableStateFlow<List<Book>>(emptyList())
@@ -64,7 +64,6 @@ class BookViewModel @Inject constructor(
 
 
 sealed interface BookResultState {
-    data object Idle : BookResultState
     data object Loading : BookResultState
     data class Success(val response: BookResponse) : BookResultState
     data class BookSuccess(val response: BookChaptersResponse) : BookResultState
