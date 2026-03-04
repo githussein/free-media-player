@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">تلاوة القرآن</string>
+    <string name="info">معلومات</string>
+    <string name="app">التطبيق</string>
+    <string name="about">حول</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="resources">موارد</string>
+    <string name="icon">أيقونة</string>
+    <string name="play">تشغيل</string>
+    <string name="icon_play">أيقونة تشغيل</string>
+    <string name="icon_pause">أيقونة إيقاف مؤقت</string>
+    <string name="icon_next">أيقونة التالي</string>
+    <string name="icon_previous">أيقونة السابق</string>
+    <string name="icon_play_pause">أيقونة تشغيل إيقاف</string>
+    <string name="icon_arrow">أيقونة توقف</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="previous">السابق</string>
+    <string name="next">التالي</string>
+    <string name="error">خطأ</string>
+    <string name="live_radio">راديو مباشر</string>
+    <!-- Home Screen -->
+    <string name="reciters">القراء</string>
+    <string name="radios">الراديو</string>
+    <string name="quran">القرآن</string>
+    <string name="hadith">الحديث</string>
+    <string name="more">المزيد</string>
+    <string name="scripts">النصوص</string>
+    <string name="quran_script">نص القرآن</string>
+    <string name="hadith_scripts">نصوص الحديث</string>
+    <string name="quran_recitations">تلاوات القرآن</string>
+    <string name="quran_tafseer">تفسير القرآن</string>
+    <string name="quran_script_poster">مع النص العربي \nوالترجمة الإنجليزية</string>
+    <string name="hadith_script_poster">مع النص العربي \nوالترجمة الإنجليزية</string>
+    <string name="read_more">اقرأ المزيد</string>
+    <string name="tafseer">تفسير</string>
+    <string name="photo_moshaf">صورة مصحف</string>
+    <string name="photo_masjid">صورة مسجد</string>
+    <!-- Reciter Screen -->
+    <string name="photo_mic">صورة ميكروفون</string>
+    <string name="recitation">تلاوة</string>
+    <string name="recitations">تلاوات</string>
+
+    <!-- Quran Scripts Screen -->
+    <string name="verses">آيات</string>
+    <!-- Hadith Scripts Screen -->
+    <string name="error_loading_data">خطأ في تحميل البيانات \nالرجاء المحاولة مرة أخرى لاحقاً</string>
+    <string name="hadiths">أحاديث</string>
+    <string name="chapters">أبواب</string>
+</resources>
