@@ -17,7 +17,7 @@
     <string name="previous">السابق</string>
     <string name="next">التالي</string>
     <string name="error">خطأ</string>
-    <string name="live_radio">راديو مباشر</string>
+    <string name="live_radio">البث الإذاعي</string>
     <!-- Home Screen -->
     <string name="reciters">القراء</string>
     <string name="radios">الراديو</string>
@@ -39,7 +39,6 @@
     <string name="photo_mic">صورة ميكروفون</string>
     <string name="recitation">تلاوة</string>
     <string name="recitations">تلاوات</string>
-
     <!-- Quran Scripts Screen -->
     <string name="verses">آيات</string>
     <!-- Hadith Scripts Screen -->
