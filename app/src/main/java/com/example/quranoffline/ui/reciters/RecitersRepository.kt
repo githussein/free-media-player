@@ -3,6 +3,7 @@ package com.example.quranoffline.ui.reciters
 import com.example.quranoffline.data.Mp3QuranApi
 import com.example.quranoffline.data.ReciterResponse
 import com.example.quranoffline.data.SurahResponse
+import com.example.quranoffline.util.LocaleHelper
 import javax.inject.Inject
 
 
@@ -16,18 +17,19 @@ class RecitersRepository @Inject constructor(
     private val mp3QuranApi: Mp3QuranApi
 ) : IRecitersRepository {
 
-    @Volatile
-    private var cachedAllReciters: ReciterResponse? = null
-
-    @Volatile
-    private var cachedSurahList: SurahResponse? = null
-
+    private val cachedAllReciters = mutableMapOf<String, ReciterResponse>()
+    private val cachedSurahList = mutableMapOf<String, SurahResponse>()
     private val cachedRecitersById = mutableMapOf<String, ReciterResponse>()
 
     override suspend fun getAllReciters(): ReciterResponse {
-        cachedAllReciters?.let { return it }
-        val response = mp3QuranApi.getAllReciters()
-        cachedAllReciters = response
+
+        val language = LocaleHelper.getApiLanguage()
+
+        cachedAllReciters[language]?.let { return it }
+
+        val response = mp3QuranApi.getAllReciters(language = language)
+
+        cachedAllReciters[language] = response
         return response
     }
 
@@ -39,9 +41,14 @@ class RecitersRepository @Inject constructor(
     }
 
     override suspend fun getSurahList(): SurahResponse {
-        cachedSurahList?.let { return it }
-        val response = mp3QuranApi.getSurahList()
-        cachedSurahList = response
+
+        val language = LocaleHelper.getApiLanguage()
+
+        cachedSurahList[language]?.let { return it }
+
+        val response = mp3QuranApi.getSurahList(language = language)
+
+        cachedSurahList[language] = response
         return response
     }
 }
