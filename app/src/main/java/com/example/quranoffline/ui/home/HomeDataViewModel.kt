@@ -26,12 +26,7 @@ class HomeDataViewModel @Inject constructor(
     private val _suggestedReciters = MutableStateFlow<List<Reciter>>(emptyList())
     val suggestedReciters: StateFlow<List<Reciter>> = _suggestedReciters.asStateFlow()
 
-    init {
-        fetchSuggestedRadios()
-        fetchSuggestedReciters()
-    }
-
-    private fun fetchSuggestedRadios() {
+    fun fetchSuggestedRadios() {
         viewModelScope.launch {
             try {
                 val radios = radioRepository.getRadioStations().radios
@@ -43,7 +38,7 @@ class HomeDataViewModel @Inject constructor(
         }
     }
 
-    private fun fetchSuggestedReciters() {
+    fun fetchSuggestedReciters() {
         viewModelScope.launch {
             try {
                 val reciters = recitersRepository.getAllReciters().reciters
