@@ -47,14 +47,14 @@ The application relies on modern Android standards, adhering to **Clean Architec
 
 The source code is modularized logically by feature packages within [`com.example.quranoffline`](app/src/main/java/com/example/quranoffline). Click any module below to dive directly into its implementation:
 
-| Package / Module | Description | Core Files |
-| :--- | :--- | :--- |
-| 🌐 **[`/data`](app/src/main/java/com/example/quranoffline/data)** | Houses API service definitions and network models mapping to external APIs. | [`Mp3QuranApi.kt`](app/src/main/java/com/example/quranoffline/data/Mp3QuranApi.kt), [`QuranService.kt`](app/src/main/java/com/example/quranoffline/data/QuranService.kt) |
-| 💉 **[`/di`](app/src/main/java/com/example/quranoffline/di)** | Dependency injection configurations utilizing Hilt to instantiate network clients and repositories. | [`AppModule.kt`](app/src/main/java/com/example/quranoffline/di/AppModule.kt), [`RepositoryModule.kt`](app/src/main/java/com/example/quranoffline/di/RepositoryModule.kt) |
-| 🎧 **[`/media`](app/src/main/java/com/example/quranoffline/media)** | The core media engine built with AndroidX Media3, managing player state, foreground services, and view-model bridging. | [`MediaPlaybackService.kt`](app/src/main/java/com/example/quranoffline/media/MediaPlaybackService.kt), [`MediaViewModel.kt`](app/src/main/java/com/example/quranoffline/media/MediaViewModel.kt) |
-| 📱 **[`/ui`](app/src/main/java/com/example/quranoffline/ui)** | The presentation layer housing all UI screens, custom composables, components, and MVVM integration. | [`home`](app/src/main/java/com/example/quranoffline/ui/home), [`reciters`](app/src/main/java/com/example/quranoffline/ui/reciters), [`components`](app/src/main/java/com/example/quranoffline/ui/components) |
-| 🌍 **[`/util`](app/src/main/java/com/example/quranoffline/util)** | General helper utilities, including localization and extensions. | [`LocaleHelper.kt`](app/src/main/java/com/example/quranoffline/util/LocaleHelper.kt) |
-| 🎯 **`Root`** | Root entry points, Main Activity, and navigation graphing. | [`MainActivity.kt`](app/src/main/java/com/example/quranoffline/MainActivity.kt), [`AppNavHost.kt`](app/src/main/java/com/example/quranoffline/AppNavHost.kt) |
+| Package / Module                                                  | Description | Core Files |
+|:------------------------------------------------------------------| :--- | :--- |
+| **[`/data`](app/src/main/java/com/example/quranoffline/data)**    | Houses API service definitions and network models mapping to external APIs. | [`Mp3QuranApi.kt`](app/src/main/java/com/example/quranoffline/data/Mp3QuranApi.kt), [`QuranService.kt`](app/src/main/java/com/example/quranoffline/data/QuranService.kt) |
+| **[`/di`](app/src/main/java/com/example/quranoffline/di)**        | Dependency injection configurations utilizing Hilt to instantiate network clients and repositories. | [`AppModule.kt`](app/src/main/java/com/example/quranoffline/di/AppModule.kt), [`RepositoryModule.kt`](app/src/main/java/com/example/quranoffline/di/RepositoryModule.kt) |
+| **[`/media`](app/src/main/java/com/example/quranoffline/media)**  | The core media engine built with AndroidX Media3, managing player state, foreground services, and view-model bridging. | [`MediaPlaybackService.kt`](app/src/main/java/com/example/quranoffline/media/MediaPlaybackService.kt), [`MediaViewModel.kt`](app/src/main/java/com/example/quranoffline/media/MediaViewModel.kt) |
+| **[`/ui`](app/src/main/java/com/example/quranoffline/ui)**        | The presentation layer housing all UI screens, custom composables, components, and MVVM integration. | [`home`](app/src/main/java/com/example/quranoffline/ui/home), [`reciters`](app/src/main/java/com/example/quranoffline/ui/reciters), [`components`](app/src/main/java/com/example/quranoffline/ui/components) |
+| **[`/util`](app/src/main/java/com/example/quranoffline/util)**    | General helper utilities, including localization and extensions. | [`LocaleHelper.kt`](app/src/main/java/com/example/quranoffline/util/LocaleHelper.kt) |
+| **`Root`**                                                        | Root entry points, Main Activity, and navigation graphing. | [`MainActivity.kt`](app/src/main/java/com/example/quranoffline/MainActivity.kt), [`AppNavHost.kt`](app/src/main/java/com/example/quranoffline/AppNavHost.kt) |
 
 ---
 
@@ -83,7 +83,7 @@ The application integrates with reliable, high-quality open-source APIs to fetch
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/tilawah.git
+   git clone https://github.com/githussein/free-media-player
    ```
 2. **Open in Android Studio:** Ensure you're running the latest stable or beta version of Android Studio (Ladybug or newer) supporting the current Kotlin & Compose versions.
 3. **Build & Run:** Let Gradle sync all dependencies, select your connected device or emulator, and click **Run**.
