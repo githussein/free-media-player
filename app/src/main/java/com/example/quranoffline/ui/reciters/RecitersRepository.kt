@@ -36,9 +36,11 @@ class RecitersRepository @Inject constructor(
     }
 
     override suspend fun getReciterById(reciterId: String): ReciterResponse {
-        cachedRecitersById[reciterId]?.let { return it }
-        val response = mp3QuranApi.getReciterById(reciterId = reciterId, language = "en")
-        cachedRecitersById[reciterId] = response
+        val language = LocaleHelper.getApiLanguage()
+        val cacheKey = "$reciterId-$language"
+        cachedRecitersById[cacheKey]?.let { return it }
+        val response = mp3QuranApi.getReciterById(reciterId = reciterId, language = language)
+        cachedRecitersById[cacheKey] = response
         return response
     }
 
