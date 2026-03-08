@@ -26,10 +26,10 @@ class BookViewModel @Inject constructor(
     val book = _book.asStateFlow()
 
     init {
-        fetchBooks()
+        // Removed fetchBooks() to allow LaunchedEffect in UI to handle it after locale resolution
     }
 
-    private fun fetchBooks() {
+    fun fetchBooks() {
         viewModelScope.launch {
             _resultState.emit(BookResultState.Loading)
 

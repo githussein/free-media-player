@@ -4,21 +4,32 @@ import com.example.quranoffline.data.BookChaptersResponse
 import com.example.quranoffline.data.BookResponse
 import com.example.quranoffline.data.BookService
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface IBooksRepository {
     suspend fun getBooks(): BookResponse
     suspend fun getBookById(bookSlug: String): BookChaptersResponse
 }
 
+@Singleton
 class BookRepository @Inject constructor(
     private val apiService: BookService
 ) : IBooksRepository {
 
+    private var cachedBooks: BookResponse? = null
+    private val cachedChapters = mutableMapOf<String, BookChaptersResponse>()
+
     override suspend fun getBooks(): BookResponse {
-        return apiService.api.getBooks()
+        cachedBooks?.let { return it }
+        val response = apiService.api.getBooks()
+        cachedBooks = response
+        return response
     }
 
     override suspend fun getBookById(bookSlug: String): BookChaptersResponse {
-        return apiService.api.getBookById(bookSlug)
+        cachedChapters[bookSlug]?.let { return it }
+        val response = apiService.api.getBookById(bookSlug)
+        cachedChapters[bookSlug] = response
+        return response
     }
 }
