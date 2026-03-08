@@ -101,7 +101,7 @@ fun HomeScreen(
         Text(stringResource(R.string.app_name), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(24.dp))
 
-        ComponentSectionHeader(stringResource(R.string.radios), stringResource(R.string.more)) {
+        ComponentSectionHeader(stringResource(R.string.radios)) {
             navController.navigate(Radio)
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -128,7 +128,7 @@ fun HomeScreen(
         Spacer(modifier = modifier.height(32.dp))
 
 
-        ComponentSectionHeader(stringResource(R.string.reciters), stringResource(R.string.more)) {
+        ComponentSectionHeader(stringResource(R.string.reciters)) {
             navController.navigate(AllReciter)
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -141,7 +141,7 @@ fun HomeScreen(
         Spacer(modifier = modifier.height(32.dp))
 
 
-        ComponentSectionHeader(stringResource(R.string.scripts), null) {}
+        ComponentSectionHeader(stringResource(R.string.scripts)) {}
         Spacer(modifier = Modifier.height(8.dp))
         ComponentScriptPoster(
             modifier = modifier,
