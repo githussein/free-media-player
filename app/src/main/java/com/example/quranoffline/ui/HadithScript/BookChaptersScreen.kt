@@ -34,13 +34,18 @@ fun BookChaptersScreen(
 ) {
     LaunchedEffect(bookId) {
         viewModel.fetchBookById(bookId)
+        if (viewModel.bookList.value.isEmpty()) {
+            viewModel.fetchBooks()
+        }
     }
 
-    val selectedBook = viewModel.bookList.collectAsState().value.find { it.bookSlug == bookId }
+    val selectedBook by viewModel.bookList.collectAsState()
+    val bookToDisplay = selectedBook.find { it.bookSlug == bookId }
     val resultState by viewModel.resultState.collectAsState()
-    val book by viewModel.book.collectAsState()
+    val bookData by viewModel.book.collectAsState()
 
-    when (resultState) {
+    val state = resultState
+    when (state) {
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success, is BookResultState.BookSuccess -> LazyColumn(
@@ -55,21 +60,21 @@ fun BookChaptersScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = selectedBook?.bookName.orEmpty(),
+                            text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedBookName(bookToDisplay?.bookSlug.orEmpty(), bookToDisplay?.bookName.orEmpty()),
                             color = Color.White,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         Text(
-                            text = selectedBook?.writerName.orEmpty(),
+                            text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedWriterName(bookToDisplay?.writerName.orEmpty()),
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         Text(
-                            text = "${selectedBook?.chapters_count.orEmpty()} ${stringResource(R.string.chapters)} - ${selectedBook?.hadiths_count.orEmpty()} ${stringResource(R.string.hadiths)}",
+                            text = "${bookToDisplay?.chapters_count.orEmpty()} ${stringResource(R.string.chapters)} - ${bookToDisplay?.hadiths_count.orEmpty()} ${stringResource(R.string.hadiths)}",
                             color = Color.White,
                             fontSize = 14.sp
                         )
@@ -79,7 +84,7 @@ fun BookChaptersScreen(
             }
 
 
-            book?.chapters?.forEachIndexed { index, chapter ->
+            bookData?.chapters?.forEachIndexed { index, chapter ->
                 item {
                     ComponentBookChapterItem(index = (index + 1).toString(), chapter = chapter) {
 //                            navController.navigate(Hadith(id))

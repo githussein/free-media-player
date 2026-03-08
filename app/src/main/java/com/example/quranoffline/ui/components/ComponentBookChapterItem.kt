@@ -43,7 +43,7 @@ fun ComponentBookChapterItem(
         )
 
         Text(
-            text = chapter.chapterArabic,
+            text = if (com.example.quranoffline.util.LocaleHelper.getApiLanguage() == "ar") chapter.chapterArabic else chapter.chapterEnglish,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )

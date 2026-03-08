@@ -25,16 +25,21 @@ fun BookScreen(
 ) {
     val resultState by viewModel.resultState.collectAsState()
 
-    when (resultState) {
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.fetchBooks()
+    }
+
+    val state = resultState
+    when (state) {
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success -> LazyColumn(
             modifier = modifier.fillMaxSize()
         ) {
-            (resultState as BookResultState.Success).response.books.forEach { book ->
+            state.response.books.forEach { book ->
                 item {
                     ComponentBookItem(book = book) {
-                        navController.navigate(BookChapters(book.bookSlug))
+                        navController.navigate(com.example.quranoffline.BookChapters(book.bookSlug))
                     }
                 }
             }

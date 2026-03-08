@@ -40,9 +40,15 @@ fun ComponentBookItem(
         Column(
             modifier = Modifier.weight(1f),
         ) {
-            Text(text = book.bookName, fontWeight = FontWeight.Bold)
+            Text(
+                text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedBookName(book.bookSlug, book.bookName),
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = book.writerName, fontSize = 14.sp)
+            Text(
+                text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedWriterName(book.writerName),
+                fontSize = 14.sp
+            )
         }
 
         Icon(
