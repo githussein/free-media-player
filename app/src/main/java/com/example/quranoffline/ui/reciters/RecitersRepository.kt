@@ -5,6 +5,7 @@ import com.example.quranoffline.data.ReciterResponse
 import com.example.quranoffline.data.SurahResponse
 import com.example.quranoffline.util.LocaleHelper
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
 interface IRecitersRepository {
@@ -13,6 +14,7 @@ interface IRecitersRepository {
     suspend fun getSurahList(): SurahResponse
 }
 
+@Singleton
 class RecitersRepository @Inject constructor(
     private val mp3QuranApi: Mp3QuranApi
 ) : IRecitersRepository {
