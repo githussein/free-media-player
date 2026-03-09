@@ -5,14 +5,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.quranoffline.R
 
 @Composable
@@ -36,50 +41,46 @@ fun ComponentRadioPoster(
     isHome: Boolean = true,
     imageId: Int = R.drawable.masjid3
 ) {
-    val posterHeight = if (isHome) 180.dp else 300.dp
     Column(
-        modifier = modifier.width(200.dp),
+        modifier = modifier.then(if (isHome) Modifier.width(170.dp) else Modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .width(180.dp)
-                .height(posterHeight)
-                .clip(RoundedCornerShape(16.dp))
+        ElevatedCard(
+            modifier = Modifier.aspectRatio(if (isHome) 1.2f else 1f),
+            shape = RoundedCornerShape(12.dp)
         ) {
-            Image(
-                painter = painterResource(id = imageId),
-                contentDescription = stringResource(R.string.photo_masjid),
-                contentScale = ContentScale.FillBounds
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.5f))
-                    .align(Alignment.Center)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = stringResource(R.string.icon_play),
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(36.dp)
-                        .align(Alignment.Center)
-
+            Box {
+                Image(
+                    painter = painterResource(id = imageId),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
+                Box(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.3f))
+                        .align(Alignment.Center)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp).align(Alignment.Center)
+                    )
+                }
             }
         }
 
         Spacer(Modifier.height(8.dp))
 
         Text(
-            stationName.removePrefix("Radio ").trim(),
-            fontSize = 16.sp,
+            text = stationName.removePrefix("Radio ").trim(),
+            style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
     }

@@ -117,9 +117,7 @@ fun HomeScreen(
         ) {
             suggestedRadios.forEachIndexed { index, radio ->
                 ComponentRadioPoster(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .clickable { mediaViewModel.playRadio(radio) },
+                    modifier = modifier.clickable { mediaViewModel.playRadio(radio) },
                     stationName = radio.name,
                     imageId = images.getOrElse(index) { R.drawable.masjid1 }
                 )
