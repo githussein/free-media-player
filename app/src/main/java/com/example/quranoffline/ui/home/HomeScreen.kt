@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -98,8 +100,14 @@ fun HomeScreen(
                 .clickable { showModal = true }
         )
 
-        Text(stringResource(R.string.app_name), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         ComponentSectionHeader(stringResource(R.string.radios)) {
             navController.navigate(Radio)
@@ -181,17 +189,23 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
             .padding(16.dp)
     ) {
         Text(
-            stringResource(R.string.info),
-            fontSize = 32.sp,
+            text = stringResource(R.string.info),
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Text(stringResource(R.string.app), color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
+        Text(
+            text = stringResource(R.string.app),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Column(
             modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color.Gray.copy(alpha = 0.3f))
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 .padding(horizontal = 16.dp)
         ) {
             ComponentInfoItem(
@@ -209,12 +223,17 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(stringResource(R.string.resources), color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
+        Text(
+            text = stringResource(R.string.resources),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Column(
             modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color.Gray.copy(alpha = 0.3f))
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 .padding(horizontal = 16.dp)
         ) {
             ComponentInfoItem(
