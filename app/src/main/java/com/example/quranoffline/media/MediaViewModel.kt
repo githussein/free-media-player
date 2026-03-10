@@ -13,14 +13,18 @@ import com.example.quranoffline.data.Surah
 import com.example.quranoffline.data.SurahUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.lifecycle.viewModelScope
 
 @HiltViewModel
 class MediaViewModel @Inject constructor(
-    @param:ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private var controller: MediaController? = null
@@ -52,6 +56,7 @@ class MediaViewModel @Inject constructor(
                                 _mediaState.value =
                                     _mediaState.value.copy(currentItem = currentPlaylist[index])
                             }
+                            startProgressUpdate()
                         }
                     }
 
@@ -59,13 +64,19 @@ class MediaViewModel @Inject constructor(
                         val index = controller?.currentMediaItemIndex ?: return
                         if (index in currentPlaylist.indices) {
                             _mediaState.value =
-                                _mediaState.value.copy(currentItem = currentPlaylist[index])
+                                _mediaState.value.copy(
+                                    currentItem = currentPlaylist[index],
+                                    duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
+                                )
                         }
                     }
 
                     override fun onPlaybackStateChanged(state: Int) {
                         val loading = state == Player.STATE_BUFFERING
-                        _mediaState.value = _mediaState.value.copy(isLoading = loading)
+                        _mediaState.value = _mediaState.value.copy(
+                            isLoading = loading,
+                            duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
+                        )
                     }
                 })
             },
@@ -158,4 +169,16 @@ class MediaViewModel @Inject constructor(
     fun next() = controller?.seekToNextMediaItem()
 
     fun previous() = controller?.seekToPreviousMediaItem()
+
+    private fun startProgressUpdate() {
+        viewModelScope.launch {
+            while (isActive && _mediaState.value.isPlaying) {
+                _mediaState.value = _mediaState.value.copy(
+                    progress = controller?.currentPosition ?: 0L,
+                    duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
+                )
+                delay(1000)
+            }
+        }
+    }
 }
