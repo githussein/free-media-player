@@ -112,6 +112,12 @@ class MediaViewModel @Inject constructor(
         reciterName: String,
         surahList: List<SurahUi>
     ) {
+        val current = _mediaState.value.currentItem
+        if (current is PlaybackItem.SurahItem && current.surahId == surah.id && current.reciterId == reciterId) {
+            if (_mediaState.value.isPlaying) pause() else resume()
+            return
+        }
+
         val playbackList = surahList.mapNotNull { surahUi ->
             val s = surahUi.surah
             val url = surahUi.server
@@ -134,6 +140,12 @@ class MediaViewModel @Inject constructor(
     }
 
     fun playRadio(radio: Radio) {
+        val current = _mediaState.value.currentItem
+        if (current is PlaybackItem.RadioItem && current.radioId == radio.id) {
+            if (_mediaState.value.isPlaying) pause() else resume()
+            return
+        }
+
         val radioItem = PlaybackItem.RadioItem(
             radioId = radio.id,
             title = radio.name,

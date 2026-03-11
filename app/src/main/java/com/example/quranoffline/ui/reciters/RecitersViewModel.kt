@@ -34,6 +34,13 @@ class ReciterViewModel @Inject constructor(
     val selectedMoshaf = _selectedMoshaf.asStateFlow()
 
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+    }
+
     fun fetchReciters() {
         viewModelScope.launch {
             _resultState.emit(RecitationsResultState.Loading)

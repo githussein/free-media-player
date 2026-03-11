@@ -255,4 +255,7 @@ private fun ComposeSurahItem(
     }
 }
 
-fun String.formatServerUrl(surahId: Int) = "${this}${String.format("%03d", surahId)}.mp3"
+fun String.formatServerUrl(surahId: Int): String {
+    val baseUrl = if (this.endsWith("/")) this else "$this/"
+    return "${baseUrl}${String.format("%03d", surahId)}.mp3"
+}
