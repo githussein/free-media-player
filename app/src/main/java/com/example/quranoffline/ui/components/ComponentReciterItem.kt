@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -57,24 +58,28 @@ fun ComposeReciterItem(reciter: Reciter, onReciterClick: (String) -> Unit) {
                 .padding(end = 16.dp)
                 .weight(1f)
         ) {
-            Text(text = reciter.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-//            reciter.moshaf.forEach {
-//                Text(text = "(${it.surah_total}) ${it.name.substringBefore("-")}", maxLines = 1)
-//            }
             Text(
-                "${reciter.moshaf.size} ${
+                text = reciter.name,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Text(
+                text = "${reciter.moshaf.size} ${
                     if (reciter.moshaf.size > 1) stringResource(R.string.recitations)
                     else stringResource(R.string.recitation)
                 }",
-                color = Color.Gray
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
         Icon(
             modifier = Modifier.padding(4.dp),
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = stringResource(R.string.icon_arrow)
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 

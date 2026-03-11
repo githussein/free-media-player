@@ -46,4 +46,6 @@
     <string name="error_loading_data">error loading data \nplease try again later</string>
     <string name="hadiths">hadiths</string>
     <string name="chapters">chapters</string>
+    <string name="the_holy_quran">The Holy Quran</string>
+    <string name="change_rewayah">Change Rewayah</string>
 </resources>

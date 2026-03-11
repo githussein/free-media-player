@@ -44,7 +44,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.quranoffline.R
 import com.example.quranoffline.data.Moshaf
+import androidx.compose.ui.res.stringResource
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.Surah
 import com.example.quranoffline.media.MediaState
@@ -130,7 +132,7 @@ fun ReciterDropdownMenu(
         modifier = Modifier
     ) {
         TextField(
-            value = selectedMoshaf?.name ?: "Change Rewayah",
+            value = selectedMoshaf?.name ?: stringResource(R.string.change_rewayah),
             textStyle = TextStyle(textAlign = TextAlign.Center),
             maxLines = 1,
             onValueChange = {},

@@ -45,4 +45,6 @@
     <string name="error_loading_data">خطأ في تحميل البيانات \nالرجاء المحاولة مرة أخرى لاحقاً</string>
     <string name="hadiths">أحاديث</string>
     <string name="chapters">أبواب</string>
+    <string name="the_holy_quran">القرآن الكريم</string>
+    <string name="change_rewayah">تغيير الرواية</string>
 </resources>

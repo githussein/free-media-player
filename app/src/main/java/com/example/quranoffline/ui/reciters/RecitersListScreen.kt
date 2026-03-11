@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import com.example.quranoffline.R
 import com.example.quranoffline.Reciter
 import com.example.quranoffline.ui.components.ComposeReciterItem
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun ReciterListScreen(
@@ -58,7 +59,7 @@ fun ReciterListScreen(
         is RecitationsResultState.Failure -> {
             val message = (resultState as RecitationsResultState.Failure).e.message
             Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = message ?: "Error fetching reciters")
+                Text(text = message ?: stringResource(R.string.error_loading_data))
             }
         }
 
@@ -74,7 +75,7 @@ fun ReciterListScreen(
                 item {
                     Text(
                         modifier = Modifier.padding(16.dp),
-                        text = "The Holy Quran",
+                        text = stringResource(R.string.reciters),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )

@@ -46,7 +46,7 @@ fun RadioScreen(
             Column(modifier = modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Radios",
+                    text = stringResource(R.string.radios),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
