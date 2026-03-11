@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,6 +26,11 @@ import com.example.quranoffline.R
 import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.ui.components.ComponentLoadingState
 import com.example.quranoffline.ui.components.ComponentRadioPoster
+import com.example.quranoffline.ui.components.shimmerEffect
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 
 @Composable
 fun RadioScreen(
@@ -38,7 +45,25 @@ fun RadioScreen(
     }
 
     when (resultState) {
-        RadiosResultState.Loading -> ComponentLoadingState()
+        RadiosResultState.Loading -> {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(10) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .shimmerEffect()
+                    )
+                }
+            }
+        }
 
         is RadiosResultState.Success -> {
             val radioStations = (resultState as RadiosResultState.Success).response.radios

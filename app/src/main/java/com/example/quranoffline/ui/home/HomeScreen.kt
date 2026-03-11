@@ -7,10 +7,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,6 +62,7 @@ import com.example.quranoffline.ui.components.ComponentRadioPoster
 import com.example.quranoffline.ui.components.ComponentScriptPoster
 import com.example.quranoffline.ui.components.ComponentSectionHeader
 import com.example.quranoffline.ui.components.ComposeReciterItem
+import com.example.quranoffline.ui.components.shimmerEffect
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,6 +79,8 @@ fun HomeScreen(
     val homeDataViewModel: HomeDataViewModel = hiltViewModel()
     val suggestedRadios by homeDataViewModel.suggestedRadios.collectAsState()
     val suggestedReciters by homeDataViewModel.suggestedReciters.collectAsState()
+    val isRadiosLoading by homeDataViewModel.isRadiosLoading.collectAsState()
+    val isRecitersLoading by homeDataViewModel.isRecitersLoading.collectAsState()
 
     LaunchedEffect(homeDataViewModel) {
         homeDataViewModel.fetchSuggestedRadios()
@@ -123,12 +128,23 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            suggestedRadios.forEachIndexed { index, radio ->
-                ComponentRadioPoster(
-                    modifier = Modifier.clickable { mediaViewModel.playRadio(radio) },
-                    stationName = radio.name,
-                    imageId = images.getOrElse(index) { R.drawable.masjid1 }
-                )
+            if (isRadiosLoading) {
+                repeat(3) {
+                    Box(
+                        modifier = Modifier
+                            .size(width = 150.dp, height = 200.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .shimmerEffect()
+                    )
+                }
+            } else {
+                suggestedRadios.forEachIndexed { index, radio ->
+                    ComponentRadioPoster(
+                        modifier = Modifier.clickable { mediaViewModel.playRadio(radio) },
+                        stationName = radio.name,
+                        imageId = images.getOrElse(index) { R.drawable.masjid1 }
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -139,9 +155,22 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        suggestedReciters.forEach { reciter ->
-            ComposeReciterItem(reciter) {
-                navController.navigate(com.example.quranoffline.Reciter(reciter.id.toString()))
+        if (isRecitersLoading) {
+            repeat(3) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .shimmerEffect()
+                )
+            }
+        } else {
+            suggestedReciters.forEach { reciter ->
+                ComposeReciterItem(reciter) {
+                    navController.navigate(com.example.quranoffline.Reciter(reciter.id.toString()))
+                }
             }
         }
         Spacer(modifier = Modifier.height(32.dp))

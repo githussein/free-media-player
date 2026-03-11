@@ -26,8 +26,14 @@ class HomeDataViewModel @Inject constructor(
     private val _suggestedReciters = MutableStateFlow<List<Reciter>>(emptyList())
     val suggestedReciters: StateFlow<List<Reciter>> = _suggestedReciters.asStateFlow()
 
-    fun fetchSuggestedRadios() {
+    private val _isRadiosLoading = MutableStateFlow(false)
+    val isRadiosLoading: StateFlow<Boolean> = _isRadiosLoading.asStateFlow()
 
+    private val _isRecitersLoading = MutableStateFlow(false)
+    val isRecitersLoading: StateFlow<Boolean> = _isRecitersLoading.asStateFlow()
+
+    fun fetchSuggestedRadios() {
+        _isRadiosLoading.value = true
         viewModelScope.launch {
             try {
                 val radios = radioRepository.getRadioStations().radios
@@ -35,12 +41,14 @@ class HomeDataViewModel @Inject constructor(
             } catch (e: Exception) {
                 _suggestedRadios.value = emptyList()
                 Log.e("HomeDataViewModel", "Error fetching radios: ${e.message}")
+            } finally {
+                _isRadiosLoading.value = false
             }
         }
     }
 
     fun fetchSuggestedReciters() {
-
+        _isRecitersLoading.value = true
         viewModelScope.launch {
             try {
                 val reciters = recitersRepository.getAllReciters().reciters
@@ -48,6 +56,8 @@ class HomeDataViewModel @Inject constructor(
             } catch (e: Exception) {
                 _suggestedReciters.value = emptyList()
                 Log.e("HomeDataViewModel", "Error fetching reciters: ${e.message}")
+            } finally {
+                _isRecitersLoading.value = false
             }
         }
     }
