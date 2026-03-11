@@ -93,7 +93,7 @@ fun HomeScreen(
             imageVector = Icons.Default.Info,
             contentDescription = stringResource(R.string.icon_play),
             tint = Color.Gray,
-            modifier = modifier
+            modifier = Modifier
                 .padding(end = 16.dp)
                 .size(24.dp)
                 .align(Alignment.End)
@@ -107,7 +107,7 @@ fun HomeScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         ComponentSectionHeader(stringResource(R.string.radios)) {
             navController.navigate(Radio)
@@ -125,13 +125,13 @@ fun HomeScreen(
         ) {
             suggestedRadios.forEachIndexed { index, radio ->
                 ComponentRadioPoster(
-                    modifier = modifier.clickable { mediaViewModel.playRadio(radio) },
+                    modifier = Modifier.clickable { mediaViewModel.playRadio(radio) },
                     stationName = radio.name,
                     imageId = images.getOrElse(index) { R.drawable.masjid1 }
                 )
             }
         }
-        Spacer(modifier = modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
 
         ComponentSectionHeader(stringResource(R.string.reciters)) {
@@ -144,13 +144,13 @@ fun HomeScreen(
                 navController.navigate(com.example.quranoffline.Reciter(reciter.id.toString()))
             }
         }
-        Spacer(modifier = modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
 
         ComponentSectionHeader(stringResource(R.string.scripts)) {}
         Spacer(modifier = Modifier.height(8.dp))
         ComponentScriptPoster(
-            modifier = modifier,
+            modifier = Modifier,
             title = "${stringResource(R.string.quran)}\n",
             description = stringResource(R.string.quran_script_poster),
             painterResourceId = R.drawable.moshaf
@@ -158,7 +158,7 @@ fun HomeScreen(
             navController.navigate(Chapters)
         }
         ComponentScriptPoster(
-            modifier = modifier,
+            modifier = Modifier,
             title = "${stringResource(R.string.hadith)}\n",
             description = stringResource(R.string.hadith_script_poster),
             painterResourceId = R.drawable.hadith
