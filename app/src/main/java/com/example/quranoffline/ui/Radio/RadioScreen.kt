@@ -41,7 +41,7 @@ fun RadioScreen(
         RadiosResultState.Loading -> ComponentLoadingState()
 
         is RadiosResultState.Success -> {
-            val radioStations = (resultState as RadiosResultState.Success).response.radios.take(20)
+            val radioStations = (resultState as RadiosResultState.Success).response.radios
             
             Column(modifier = modifier.fillMaxSize()) {
                 Text(
