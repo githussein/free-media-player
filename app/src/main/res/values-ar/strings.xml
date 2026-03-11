@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">تلاوة القرآن</string>
+    <string name="app_name">صوت التلاوة</string>
     <string name="info">معلومات</string>
     <string name="app">التطبيق</string>
     <string name="about">حول</string>
@@ -23,7 +23,6 @@
     <string name="radios">الراديو</string>
     <string name="quran">القرآن</string>
     <string name="hadith">الحديث</string>
-    <string name="more">المزيد</string>
     <string name="scripts">النصوص</string>
     <string name="quran_script">نص القرآن</string>
     <string name="hadith_scripts">نصوص الحديث</string>
@@ -47,4 +46,5 @@
     <string name="chapters">أبواب</string>
     <string name="the_holy_quran">القرآن الكريم</string>
     <string name="change_rewayah">تغيير الرواية</string>
+    <string name="search_reciters">ابحث عن قارئ...</string>
 </resources>

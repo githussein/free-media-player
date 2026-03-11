@@ -90,14 +90,14 @@ fun ReciterListScreen(
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         placeholder = { 
                             Text(
-                                text = "Search reciters...", 
+                                text = stringResource(R.string.search_reciters), 
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                             ) 
                         },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Search, 
-                                contentDescription = "Search Icon",
+                                contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
