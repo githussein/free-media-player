@@ -27,7 +27,7 @@ class HomeDataViewModel @Inject constructor(
     val suggestedReciters: StateFlow<List<Reciter>> = _suggestedReciters.asStateFlow()
 
     fun fetchSuggestedRadios() {
-        if (_suggestedRadios.value.isNotEmpty()) return
+
         viewModelScope.launch {
             try {
                 val radios = radioRepository.getRadioStations().radios
@@ -40,7 +40,7 @@ class HomeDataViewModel @Inject constructor(
     }
 
     fun fetchSuggestedReciters() {
-        if (_suggestedReciters.value.isNotEmpty()) return
+
         viewModelScope.launch {
             try {
                 val reciters = recitersRepository.getAllReciters().reciters
