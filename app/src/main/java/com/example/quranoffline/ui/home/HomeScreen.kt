@@ -119,7 +119,6 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        val images = listOf(R.drawable.masjid1, R.drawable.masjid2, R.drawable.masjid3)
         val scrollState = rememberScrollState()
 
         Row(
@@ -138,11 +137,16 @@ fun HomeScreen(
                     )
                 }
             } else {
-                suggestedRadios.forEachIndexed { index, radio ->
+                val mediaState by mediaViewModel.mediaState.collectAsState()
+                suggestedRadios.forEach { radio ->
+                    val isItemPlaying = mediaState.isPlaying && 
+                                       mediaState.currentItem is com.example.quranoffline.media.PlaybackItem.RadioItem && 
+                                       (mediaState.currentItem as com.example.quranoffline.media.PlaybackItem.RadioItem).radioId == radio.id
+                    
                     ComponentRadioPoster(
                         modifier = Modifier.clickable { mediaViewModel.playRadio(radio) },
                         stationName = radio.name,
-                        imageId = images.getOrElse(index) { R.drawable.masjid1 }
+                        isPlaying = isItemPlaying
                     )
                 }
             }

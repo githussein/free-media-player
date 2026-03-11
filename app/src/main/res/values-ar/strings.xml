@@ -21,6 +21,7 @@
     <!-- Home Screen -->
     <string name="reciters">القراء</string>
     <string name="radios">الراديو</string>
+    <string name="radio_subtitle">استمع إلى البث المباشر من جميع أنحاء العالم</string>
     <string name="quran">القرآن</string>
     <string name="hadith">الحديث</string>
     <string name="scripts">النصوص</string>
