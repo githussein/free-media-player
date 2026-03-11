@@ -1,5 +1,6 @@
 package com.example.quranoffline.ui.reciters
 
+import java.util.Locale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -259,5 +260,5 @@ private fun ComposeSurahItem(
 
 fun String.formatServerUrl(surahId: Int): String {
     val baseUrl = if (this.endsWith("/")) this else "$this/"
-    return "${baseUrl}${String.format("%03d", surahId)}.mp3"
+    return "${baseUrl}${String.format(Locale.US, "%03d", surahId)}.mp3"
 }

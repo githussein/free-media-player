@@ -17,6 +17,9 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -109,13 +112,18 @@ fun MediaController(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val layoutDirection = LocalLayoutDirection.current
 
                     IconButton(onClick = onPrevious) {
                         Icon(
                             imageVector = Icons.Default.SkipPrevious,
                             contentDescription = stringResource(R.string.icon_previous),
                             tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier
+                                .size(28.dp)
+                                .graphicsLayer {
+                                    if (layoutDirection == LayoutDirection.Rtl) scaleX = -1f
+                                }
                         )
                     }
 
@@ -156,7 +164,11 @@ fun MediaController(
                             imageVector = Icons.Default.SkipNext,
                             contentDescription = stringResource(R.string.icon_next),
                             tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier
+                                .size(28.dp)
+                                .graphicsLayer {
+                                    if (layoutDirection == LayoutDirection.Rtl) scaleX = -1f
+                                }
                         )
                     }
                 }
