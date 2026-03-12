@@ -16,6 +16,13 @@ class RadioViewModel @Inject constructor(
     private val _resultState = MutableStateFlow<RadiosResultState>(RadiosResultState.Loading)
     val resultState = _resultState.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+    }
+
     fun fetchRadioStations() {
         viewModelScope.launch {
             _resultState.emit(RadiosResultState.Loading)

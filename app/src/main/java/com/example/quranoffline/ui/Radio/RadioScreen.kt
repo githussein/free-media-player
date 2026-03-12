@@ -13,6 +13,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,6 +55,7 @@ fun RadioScreen(
     radioViewModel: RadioViewModel = hiltViewModel()
 ) {
     val resultState by radioViewModel.resultState.collectAsState()
+    val searchQuery by radioViewModel.searchQuery.collectAsState()
     val mediaState by mediaViewModel.mediaState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -104,7 +110,43 @@ fun RadioScreen(
                         }
                     }
 
-                    itemsIndexed(radioStations) { index, radio ->
+                    item {
+                        TextField(
+                            value = searchQuery,
+                            onValueChange = { radioViewModel.onSearchQueryChanged(it) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            placeholder = {
+                                Text(
+                                    text = stringResource(R.string.search_radios),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            singleLine = true,
+                            shape = RoundedCornerShape(100),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                disabledIndicatorColor = Color.Transparent
+                            )
+                        )
+                    }
+
+                    val filteredStations = radioStations.filter {
+                        it.name.contains(searchQuery, ignoreCase = true)
+                    }
+
+                    itemsIndexed(filteredStations, key = { _, radio -> radio.id }) { index, radio ->
                         // Premium Entrance Animation - limited to first 10 items to avoid scrolling delay
                         val visibleState = remember { MutableTransitionState(false) }.apply { targetState = true }
                         val animationDelay = if (index < 10) index * 60 else 0
