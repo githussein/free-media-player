@@ -33,6 +33,8 @@ class HomeDataViewModel @Inject constructor(
     val isRecitersLoading: StateFlow<Boolean> = _isRecitersLoading.asStateFlow()
 
     fun fetchSuggestedRadios() {
+        if (_suggestedRadios.value.isNotEmpty()) return
+        
         _isRadiosLoading.value = true
         viewModelScope.launch {
             try {
@@ -48,6 +50,8 @@ class HomeDataViewModel @Inject constructor(
     }
 
     fun fetchSuggestedReciters() {
+        if (_suggestedReciters.value.isNotEmpty()) return
+        
         _isRecitersLoading.value = true
         viewModelScope.launch {
             try {

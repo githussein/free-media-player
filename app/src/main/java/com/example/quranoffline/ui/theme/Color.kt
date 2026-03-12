@@ -3,10 +3,8 @@ package com.example.quranoffline.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
-// Brand
-val BrandPrimary = Color(0xFF1DB954)
+val BrandPrimary = Color(0xFFBB86FC)
 
-// Light Theme
 val LightBackground = Color(0xFFF7F7F7)
 val LightSurface = Color(0xFFFFFFFF)
 

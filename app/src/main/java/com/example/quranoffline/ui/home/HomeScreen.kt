@@ -76,7 +76,6 @@ fun HomeScreen(
     val verticalScrollState = rememberScrollState()
     var showModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val homeDataViewModel: HomeDataViewModel = hiltViewModel()
     val suggestedRadios by homeDataViewModel.suggestedRadios.collectAsState()
     val suggestedReciters by homeDataViewModel.suggestedReciters.collectAsState()
     val isRadiosLoading by homeDataViewModel.isRadiosLoading.collectAsState()
@@ -108,7 +107,7 @@ fun HomeScreen(
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )

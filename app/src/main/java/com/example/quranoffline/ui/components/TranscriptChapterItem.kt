@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,7 +37,11 @@ fun TranscriptChapterItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Text(index)
+        Text(
+            text = index,
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = Modifier.width(16.dp))
 
         Column(

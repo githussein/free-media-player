@@ -41,17 +41,17 @@ fun ComponentRadioPoster(
     isPlaying: Boolean = false,
     isHome: Boolean = true
 ) {
-    val premiumGradients = listOf(
-        listOf(Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)), // Deep Blue Mesh
-        listOf(Color(0xFF134E5E), Color(0xFF71B280)), // Emerald Sea
-        listOf(Color(0xFF42275A), Color(0xFF734B6D)), // Plum
-        listOf(Color(0xFF2C3E50), Color(0xFF4CA1AF)), // Modern Slate
-        listOf(Color(0xFF1D2671), Color(0xFFC33764)), // Celestial
-        listOf(Color(0xFF5614B0), Color(0xFFDBD65C)), // Cosmic
+    val spiritualGradients = listOf(
+        listOf(Color(0xFF9C27B0), Color(0xFF4A0F6F)), // Vibrant Amethyst to Deep Purple
+        listOf(Color(0xFFBB86FC), Color(0xFF6200EE)), // Glowing Lavender
+        listOf(Color(0xFF7E57C2), Color(0xFF311B92)), // Soft Indigo
+        listOf(Color(0xFFD1C4E9), Color(0xFF4A0F6F)), // Mist to Deep
+        listOf(Color(0xFFBA68C8), Color(0xFF7B1FA2)), // Orchid to Plum
+        listOf(Color(0xFF9575CD), Color(0xFF4527A0)), // Periwinkle to Royal
     )
 
-    val gradientIndex = abs(stationName.hashCode()) % premiumGradients.size
-    val brush = Brush.linearGradient(premiumGradients[gradientIndex])
+    val gradientIndex = abs(stationName.hashCode()) % spiritualGradients.size
+    val brush = Brush.linearGradient(spiritualGradients[gradientIndex])
 
     Column(
         modifier = modifier.then(if (isHome) Modifier.width(170.dp) else Modifier),
