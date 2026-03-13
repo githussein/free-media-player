@@ -182,6 +182,11 @@ class MediaViewModel @Inject constructor(
 
     fun previous() = controller?.seekToPreviousMediaItem()
 
+    fun seekTo(position: Long) {
+        controller?.seekTo(position)
+        _mediaState.value = _mediaState.value.copy(progress = position)
+    }
+
     private fun startProgressUpdate() {
         viewModelScope.launch {
             while (isActive && _mediaState.value.isPlaying) {
