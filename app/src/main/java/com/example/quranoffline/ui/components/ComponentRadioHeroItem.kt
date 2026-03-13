@@ -115,7 +115,7 @@ fun ComponentRadioHeroItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stationName.removePrefix("Radio ").trim(),
+                        text = stationName.removePrefix("Radio ").removePrefix("إذاعة ").trim(),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold,

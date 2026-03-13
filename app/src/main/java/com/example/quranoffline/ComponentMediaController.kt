@@ -131,7 +131,7 @@ fun MediaController(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = currentItem.title,
+                        text = currentItem.title.removePrefix("Radio ").removePrefix("إذاعة ").trim(),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,

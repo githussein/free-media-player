@@ -97,7 +97,7 @@ fun ComponentRadioPoster(
         Spacer(Modifier.height(8.dp))
 
         Text(
-            text = stationName.removePrefix("Radio ").trim(),
+            text = stationName.removePrefix("Radio ").removePrefix("إذاعة ").trim(),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
