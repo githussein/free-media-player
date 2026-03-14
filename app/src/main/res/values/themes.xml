@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.QuranOffline" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.QuranOffline.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#72189F</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="windowSplashScreenIconBackgroundColor">#72189F</item>
+        <item name="postSplashScreenTheme">@style/Theme.QuranOffline</item>
+    </style>
+
 </resources>
