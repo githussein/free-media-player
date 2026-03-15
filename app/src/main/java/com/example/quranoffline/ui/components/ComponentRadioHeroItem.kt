@@ -100,7 +100,7 @@ fun ComponentRadioHeroItem(
                             .background(Color.Red)
                     )
                     Text(
-                        text = "LIVE",
+                        text = androidx.compose.ui.res.stringResource(com.example.quranoffline.R.string.live),
                         color = Color.White.copy(alpha = 0.8f),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,

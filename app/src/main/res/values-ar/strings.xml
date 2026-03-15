@@ -49,4 +49,9 @@
     <string name="change_rewayah">تغيير الرواية</string>
     <string name="search_reciters">ابحث عن قارئ...</string>
     <string name="search_radios">ابحث عن إذاعة...</string>
+    <string name="live">مباشر</string>
+    <string name="surahs">السور</string>
+    <string name="reciters_subtitle">استمع إلي أشهر القراء من جميع أنحاء العالم</string>
+    <string name="quran_script_subtitle">اقرأ القرآن الكريم مع الترجمة</string>
+    <string name="hadith_script_subtitle">اقرأ كتب الأحاديث مع الترجمة</string>
 </resources>

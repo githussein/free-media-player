@@ -88,7 +88,7 @@ fun HomeScreen(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(verticalScrollState)
-            .padding(vertical = 32.dp),
+            .padding(top = 32.dp, bottom = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -177,7 +177,9 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
 
-        ComponentSectionHeader(stringResource(R.string.scripts)) {}
+        ComponentSectionHeader(stringResource(R.string.scripts)) {
+            navController.navigate(com.example.quranoffline.Chapters)
+        }
         Spacer(modifier = Modifier.height(8.dp))
         ComponentScriptPoster(
             modifier = Modifier,

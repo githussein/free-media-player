@@ -49,7 +49,6 @@ class MediaViewModel @Inject constructor(
                 controller?.addListener(object : Player.Listener {
                     override fun onIsPlayingChanged(isPlaying: Boolean) {
                         _mediaState.value = _mediaState.value.copy(isPlaying = isPlaying)
-
                         if (isPlaying) {
                             val index = controller?.currentMediaItemIndex ?: -1
                             if (index != -1 && index < currentPlaylist.size) {
@@ -63,11 +62,10 @@ class MediaViewModel @Inject constructor(
                     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                         val index = controller?.currentMediaItemIndex ?: return
                         if (index in currentPlaylist.indices) {
-                            _mediaState.value =
-                                _mediaState.value.copy(
-                                    currentItem = currentPlaylist[index],
-                                    duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
-                                )
+                            _mediaState.value = _mediaState.value.copy(
+                                currentItem = currentPlaylist[index],
+                                duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
+                            )
                         }
                     }
 
@@ -163,6 +161,7 @@ class MediaViewModel @Inject constructor(
         controller?.prepare()
         controller?.play()
 
+        currentPlaylist = listOf(radioItem)
         _mediaState.value = _mediaState.value.copy(
             currentItem = radioItem,
             isPlaying = true

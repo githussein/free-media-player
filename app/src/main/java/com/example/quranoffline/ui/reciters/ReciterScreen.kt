@@ -75,7 +75,7 @@ fun ReciterScreen(
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -95,9 +95,18 @@ fun ReciterScreen(
                     onMoshafSelected = { viewModel.selectMoshaf(it) }
                 )
             }
+            item {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                    text = stringResource(R.string.surahs),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
-        surahList.forEach { surahUi ->
+        surahList.forEachIndexed { index, surahUi ->
             item {
                 ComposeSurahItem(
                     surah = surahUi.surah ?: return@item,

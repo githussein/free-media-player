@@ -49,7 +49,8 @@ fun BookChaptersScreen(
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success, is BookResultState.BookSuccess -> LazyColumn(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxSize(),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp)
         ) {
             item {
                 ComponentGradientBox(

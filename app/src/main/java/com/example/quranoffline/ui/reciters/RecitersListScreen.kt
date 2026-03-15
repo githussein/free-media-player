@@ -84,14 +84,24 @@ fun ReciterListScreen(
             }
             
             LazyColumn(
-                modifier = modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 100.dp)
             ) {
                 item {
                     Text(
                         modifier = Modifier.padding(16.dp),
                         text = stringResource(R.string.reciters),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                item {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                        text = stringResource(R.string.reciters_subtitle),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 

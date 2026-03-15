@@ -29,7 +29,13 @@ class RadioViewModel @Inject constructor(
 
             try {
                 val response = repository.getRadioStations()
-                _resultState.emit(RadiosResultState.Success(response))
+                val query = searchQuery.value.lowercase()
+                val filteredRadios = if (query.isEmpty()) {
+                    response.radios
+                } else {
+                    response.radios.filter { it.name.lowercase().contains(query) }
+                }
+                _resultState.emit(RadiosResultState.Success(response.copy(radios = filteredRadios)))
             } catch (e: Exception) {
                 _resultState.emit(RadiosResultState.Failure(e))
             }

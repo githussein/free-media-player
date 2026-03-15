@@ -67,8 +67,9 @@ fun MediaController(
         tonalElevation = 4.dp,
         shadowElevation = 12.dp
     ) {
-        Column {
-            if (mediaState.duration > 0 && currentItem is PlaybackItem.SurahItem) {
+        Column(modifier = Modifier.padding(vertical = 20.dp)) {
+            if (currentItem is PlaybackItem.SurahItem) {
+                val duration = mediaState.duration.coerceAtLeast(1L)
                 var sliderPosition by remember { mutableStateOf(mediaState.progress.toFloat()) }
                 var isDragging by remember { mutableStateOf(false) }
 
@@ -78,7 +79,7 @@ fun MediaController(
                     }
                 }
 
-                Column(modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Slider(
                         value = sliderPosition,
                         onValueChange = {
@@ -89,7 +90,7 @@ fun MediaController(
                             isDragging = false
                             onSeek(sliderPosition.toLong())
                         },
-                        valueRange = 0f..mediaState.duration.toFloat(),
+                        valueRange = 0f..duration.toFloat(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(32.dp)
@@ -120,13 +121,13 @@ fun MediaController(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
-            val topPadding = if (currentItem is PlaybackItem.RadioItem) 12.dp else 0.dp
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 12.dp, top = topPadding, bottom = 12.dp),
+                    .padding(start = 20.dp, end = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
@@ -155,15 +156,19 @@ fun MediaController(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val direction = LocalLayoutDirection.current
-                    IconButton(onClick = onPrevious) {
-                        Icon(
-                            imageVector = Icons.Default.SkipPrevious,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(28.dp).graphicsLayer {
-                                if (direction == LayoutDirection.Rtl) scaleX = -1f
-                            }
-                        )
+                    if (currentItem is PlaybackItem.SurahItem) {
+                        IconButton(onClick = onPrevious) {
+                            Icon(
+                                imageVector = Icons.Default.SkipPrevious,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(28.dp).graphicsLayer {
+                                    if (direction == LayoutDirection.Rtl) scaleX = -1f
+                                }
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.width(48.dp))
                     }
 
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.size(52.dp)) {
@@ -192,15 +197,19 @@ fun MediaController(
                         }
                     }
 
-                    IconButton(onClick = onNext) {
-                        Icon(
-                            imageVector = Icons.Default.SkipNext,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(28.dp).graphicsLayer {
-                                if (direction == LayoutDirection.Rtl) scaleX = -1f
-                            }
-                        )
+                    if (currentItem is PlaybackItem.SurahItem) {
+                        IconButton(onClick = onNext) {
+                            Icon(
+                                imageVector = Icons.Default.SkipNext,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(28.dp).graphicsLayer {
+                                    if (direction == LayoutDirection.Rtl) scaleX = -1f
+                                }
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.width(48.dp))
                     }
                 }
             }
@@ -210,5 +219,5 @@ fun MediaController(
 
 private fun formatMillis(millis: Long): String {
     val totalSecs = millis / 1000
-    return String.format("%02d:%02d", totalSecs / 60, totalSecs % 60)
+    return String.format(java.util.Locale.US, "%02d:%02d", totalSecs / 60, totalSecs % 60)
 }
