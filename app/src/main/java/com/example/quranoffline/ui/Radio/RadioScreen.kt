@@ -34,8 +34,6 @@ fun RadioScreen(
     val scrollState = rememberScrollState()
 
     when (resultState) {
-        RadiosResultState.Idle -> Text("idle")
-
         RadiosResultState.Loading -> ComponentLoadingState()
 
         is RadiosResultState.Success -> Column(

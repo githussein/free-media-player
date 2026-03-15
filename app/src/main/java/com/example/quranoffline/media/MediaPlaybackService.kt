@@ -32,7 +32,16 @@ class MediaPlaybackService : MediaSessionService() {
     override fun onCreate() {
         super.onCreate()
 
-        player = ExoPlayer.Builder(this).build()
+        player = ExoPlayer.Builder(this)
+            .setAudioAttributes(
+                androidx.media3.common.AudioAttributes.Builder()
+                    .setUsage(androidx.media3.common.C.USAGE_MEDIA)
+                    .setContentType(androidx.media3.common.C.CONTENT_TYPE_SPEECH)
+                    .build(),
+                true
+            )
+            .setHandleAudioBecomingNoisy(true)
+            .build()
 
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
@@ -55,54 +64,16 @@ class MediaPlaybackService : MediaSessionService() {
         })
 
         mediaSession = MediaSession.Builder(this, player).build()
-
-        startForegroundService()
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
         mediaSession
 
-    private fun startForegroundService() {
-        val channelId = "media_playback_channel"
-        val channelName = "Quran Playback"
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                channelName,
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "Media playback controls"
-            }
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
+    override fun onTaskRemoved(rootIntent: android.content.Intent?) {
+        val player = mediaSession?.player
+        if (player == null || !player.playWhenReady || player.mediaItemCount == 0 || player.playbackState == Player.STATE_ENDED) {
+            stopSelf()
         }
-
-<<<<<<< HEAD
-=======
-        // Build the notification
->>>>>>> origin/feature/radio-streaming
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Quran Playback")
-            .setContentText("Playing audio in background")
-            .setSmallIcon(R.drawable.moshaf)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-<<<<<<< HEAD
-            .setOngoing(true)
-=======
-            .setOngoing(true) // Cannot be swiped away
->>>>>>> origin/feature/radio-streaming
-            .build()
-
-        startForeground(1, notification)
-    }
-
-    private fun createNotification(): Notification {
-        return NotificationCompat.Builder(this, "media_channel")
-            .setContentTitle("Quran Playback")
-            .setContentText("Playing audio")
-            .setSmallIcon(R.drawable.moshaf)
-            .build()
     }
 
     override fun onDestroy() {

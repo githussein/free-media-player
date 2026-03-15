@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -42,6 +43,7 @@ import com.example.quranoffline.data.Surah
 import com.example.quranoffline.media.MediaState
 import com.example.quranoffline.media.MediaViewModel
 import com.example.quranoffline.media.PlaybackItem
+import com.example.quranoffline.ui.reciters.ReciterViewModel
 
 @Composable
 fun ReciterScreen(
@@ -78,20 +80,19 @@ fun ReciterScreen(
             item { ReciterDropdownMenu(reciter = reciter) }
         }
 
-        surahList.forEach { surahUi ->
-            item {
-                ComposeSurahItem(
-                    surah = surahUi.surah ?: return@item,
-                    mediaState = mediaState,
-                    onMediaClick = { surah ->
-                        mediaViewModel.playSurah(
-                            surah = surah,
-                            reciterName = reciter?.name.orEmpty(),
-                            surahList = surahList
-                        )
-                    }
-                )
-            }
+        items(surahList) { surahUi ->
+            ComposeSurahItem(
+                surah = surahUi.surah ?: return@items,
+                mediaState = mediaState,
+                onMediaClick = { surah ->
+                    mediaViewModel.playSurah(
+                        surah = surah,
+                        reciterId = reciter?.id ?: 0,
+                        reciterName = reciter?.name.orEmpty(),
+                        surahList = surahList
+                    )
+                }
+            )
         }
     }
 }
