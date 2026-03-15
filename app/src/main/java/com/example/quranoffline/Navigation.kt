@@ -25,3 +25,6 @@ object Books
 
 @Serializable
 data class BookChapters(val bookId: String)
+
+@Serializable
+data class Hadiths(val bookId: String, val chapterId: String)

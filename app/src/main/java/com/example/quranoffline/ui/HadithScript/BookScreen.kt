@@ -68,13 +68,13 @@ fun BookScreen(
             }
         }
 
-        is BookResultState.BookSuccess -> {}
-
         is BookResultState.Failure -> Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
             Text(stringResource(R.string.error_loading_data))
         }
+
+        else -> {}
     }
 }

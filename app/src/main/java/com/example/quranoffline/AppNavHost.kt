@@ -89,5 +89,14 @@ fun AppNavHost(
                 bookId = it.toRoute<BookChapters>().bookId
             )
         }
+
+        composable<Hadiths> {
+            val route = it.toRoute<Hadiths>()
+            com.example.quranoffline.ui.HadithScript.HadithScriptScreen(
+                modifier = Modifier.padding(innerPadding),
+                bookSlug = route.bookId,
+                chapterId = route.chapterId
+            )
+        }
     }
 }

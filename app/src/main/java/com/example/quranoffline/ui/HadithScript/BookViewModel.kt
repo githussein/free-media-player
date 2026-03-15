@@ -60,12 +60,26 @@ class BookViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchHadiths(bookSlug: String, chapterId: String) {
+        viewModelScope.launch {
+            _resultState.emit(BookResultState.Loading)
+            try {
+                val response = repository.getHadiths(bookSlug, chapterId)
+                _resultState.emit(BookResultState.HadithSuccess(response))
+            } catch (e: Exception) {
+                _resultState.emit(BookResultState.Failure(e))
+                Log.e("BookViewModel", "Error fetching hadiths: ${e.message}")
+            }
+        }
+    }
 }
 
 
 sealed interface BookResultState {
     data object Loading : BookResultState
-    data class Success(val response: BookResponse) : BookResultState
-    data class BookSuccess(val response: BookChaptersResponse) : BookResultState
+    data class Success(val response: com.example.quranoffline.data.BookResponse) : BookResultState
+    data class BookSuccess(val response: com.example.quranoffline.data.BookChaptersResponse) : BookResultState
+    data class HadithSuccess(val response: com.example.quranoffline.data.HadithListResponse) : BookResultState
     data class Failure(val e: Exception) : BookResultState
 }

@@ -48,7 +48,7 @@ fun BookChaptersScreen(
     when (state) {
         BookResultState.Loading -> ComponentLoadingState()
 
-        is BookResultState.Success, is BookResultState.BookSuccess -> LazyColumn(
+        is BookResultState.Success, is BookResultState.BookSuccess, is BookResultState.HadithSuccess -> LazyColumn(
             modifier = modifier.fillMaxSize(),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp)
         ) {
@@ -88,7 +88,7 @@ fun BookChaptersScreen(
             bookData?.chapters?.forEachIndexed { index, chapter ->
                 item {
                     ComponentBookChapterItem(index = (index + 1).toString(), chapter = chapter) {
-//                            navController.navigate(Hadith(id))
+                        navController.navigate(com.example.quranoffline.Hadiths(chapter.bookSlug, chapter.chapterNumber))
                     }
                 }
             }

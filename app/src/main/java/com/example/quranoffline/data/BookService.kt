@@ -32,6 +32,14 @@ object BookService {
             @Path("bookSlug") bookSlug: String,
             @Query("apiKey") apiKey: String = API_KEY
         ): BookChaptersResponse
+
+        @GET("hadiths")
+        suspend fun getHadiths(
+            @Query("apiKey") apiKey: String = API_KEY,
+            @Query("book") book: String,
+            @Query("chapter") chapter: String,
+            @Query("paginate") paginate: Int = 100
+        ): HadithListResponse
     }
 }
 
@@ -67,4 +75,25 @@ data class Chapter(
     val chapterUrdu: String,
     val chapterArabic: String,
     val bookSlug: String
+)
+
+data class HadithListResponse(
+    val status: Int,
+    val message: String,
+    val hadiths: HadithData
+)
+
+data class HadithData(
+    val data: List<Hadith>
+)
+
+data class Hadith(
+    val id: Int,
+    val hadithNumber: String,
+    val englishNarrator: String?,
+    val hadithEnglish: String?,
+    val hadithArabic: String?,
+    val hadithUrdu: String?,
+    val bookSlug: String,
+    val chapterId: String
 )
