@@ -30,7 +30,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
 import androidx.compose.runtime.LaunchedEffect
+=======
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,6 +79,7 @@ fun HomeScreen(
     val verticalScrollState = rememberScrollState()
     var showModal by remember { mutableStateOf(false) }
     val context = LocalContext.current
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
     val suggestedRadios by homeDataViewModel.suggestedRadios.collectAsState()
     val suggestedReciters by homeDataViewModel.suggestedReciters.collectAsState()
     val isRadiosLoading by homeDataViewModel.isRadiosLoading.collectAsState()
@@ -85,6 +89,11 @@ fun HomeScreen(
         homeDataViewModel.fetchSuggestedRadios()
         homeDataViewModel.fetchSuggestedReciters()
     }
+=======
+    val mediaViewModel: MediaViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
+    val radios by homeViewModel.suggestedRadios.collectAsState()
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
 
     Column(
         modifier = modifier
@@ -113,11 +122,16 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
 
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
         ComponentSectionHeader(stringResource(R.string.radios)) {
+=======
+        ComponentSectionHeader("Radios", "more>") {
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
             navController.navigate(Radio)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
+        val images = listOf(R.drawable.masjid1, R.drawable.masjid2, R.drawable.masjid3)
         val scrollState = rememberScrollState()
 
         Row(
@@ -126,6 +140,7 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
             if (isRadiosLoading) {
                 repeat(3) {
                     Box(
@@ -148,16 +163,31 @@ fun HomeScreen(
                         isPlaying = isItemPlaying
                     )
                 }
+=======
+            radios.forEachIndexed { index, radio ->
+                ComponentRadioPoster(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .clickable { mediaViewModel.playRadio(radio) },
+                    stationName = radio.name,
+                    imageId = images.getOrElse(index) { R.drawable.masjid1 }
+                )
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
 
 
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
         ComponentSectionHeader(stringResource(R.string.reciters)) {
+=======
+        ComponentSectionHeader("Reciters", "more") {
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
             navController.navigate(AllReciter)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
         if (isRecitersLoading) {
             repeat(3) {
                 Box(
@@ -177,6 +207,39 @@ fun HomeScreen(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
+=======
+        ComposeReciterItem(
+            Reciter(
+                id = 1,
+                name = "Mahmoud Al-Hussary",
+                letter = "M",
+                moshaf = Moshaf.generateRandomMoshafList()
+            )
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("118"))
+        }
+        ComposeReciterItem(
+            Reciter(
+                id = 1,
+                name = "Mishary Alafasi",
+                letter = "M",
+                moshaf = Moshaf.generateRandomMoshafList()
+            )
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("123"))
+        }
+        ComposeReciterItem(
+            Reciter(
+                id = 1,
+                name = "Mohamemed Al-Minshawi",
+                letter = "M",
+                moshaf = Moshaf.generateRandomMoshafList()
+            )
+        ) {
+            navController.navigate(com.example.quranoffline.Reciter("112"))
+        }
+        Spacer(modifier = modifier.height(32.dp))
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
 
 
         ComponentSectionHeader(stringResource(R.string.scripts)) {}
@@ -221,6 +284,7 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
             .padding(16.dp)
     ) {
         Text(
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/home/HomeScreen.kt
             text = stringResource(R.string.info),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
@@ -233,6 +297,14 @@ fun InfoSheetContent(onItemClick: (String?) -> Unit) {
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
+=======
+            "Information",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        Text("App", color = Color.Gray, modifier = Modifier.padding(horizontal = 16.dp))
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/HomeScreen.kt
         Spacer(modifier = Modifier.height(8.dp))
         Column(
             modifier = Modifier

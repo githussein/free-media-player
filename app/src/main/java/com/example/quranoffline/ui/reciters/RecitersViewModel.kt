@@ -5,7 +5,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/reciters/RecitersViewModel.kt
 import com.example.quranoffline.data.Moshaf
+=======
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/AllRecitersScreen/RecitersViewModel.kt
 import com.example.quranoffline.data.Reciter
 import com.example.quranoffline.data.ReciterResponse
 import com.example.quranoffline.data.Surah
@@ -61,8 +64,23 @@ class ReciterViewModel @Inject constructor(
                 val response = repository.getReciterById(reciterId = id)
                 val reciter = response.reciters.firstOrNull()
 
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/reciters/RecitersViewModel.kt
                 _selectedReciter.value = reciter
                 _selectedMoshaf.value = reciter?.moshaf?.firstOrNull()
+=======
+                _selectedReciter.value = response.reciters.firstOrNull()
+                _resultState.emit(RecitationsResultState.Success(response))
+
+                val availableSurahId = response.reciters.firstOrNull()?.moshaf?.firstOrNull()?.surah_list?.split(",")?.map { it.toInt() }?.toList()
+
+                val surahList = fetchSurahList()
+
+                val surahNameList = availableSurahId?.map { surahId ->
+                    val surah = surahList.firstOrNull { it.id == surahId }
+                    SurahUi(surah = surah, server = response.reciters.firstOrNull()?.moshaf?.firstOrNull()?.server?.formatServerUrl(surahId))
+                }
+                _surahList.emit(surahNameList.orEmpty())
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/AllRecitersScreen/RecitersViewModel.kt
 
                 _resultState.emit(RecitationsResultState.Success(response))
                 buildSurahList()
@@ -72,6 +90,7 @@ class ReciterViewModel @Inject constructor(
         }
     }
 
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/reciters/RecitersViewModel.kt
     fun selectMoshaf(moshaf: Moshaf) {
         _selectedMoshaf.value = moshaf
         buildSurahList()
@@ -97,6 +116,15 @@ class ReciterViewModel @Inject constructor(
             }
 
             _surahList.emit(surahUiList)
+=======
+    suspend fun fetchSurahList(): List<Surah> {
+        return try {
+            val response = repository.getSurahList()
+            response.suwar
+        } catch (e: Exception) {
+            Log.e("ReciterViewModel", "Error fetching surahs: ${e.message}")
+            emptyList()
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/AllRecitersScreen/RecitersViewModel.kt
         }
     }
 

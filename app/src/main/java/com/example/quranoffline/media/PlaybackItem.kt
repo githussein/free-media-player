@@ -8,12 +8,19 @@ sealed class PlaybackItem {
 
     data class SurahItem(
         val surahId: Int,
+<<<<<<< HEAD
         val reciterId: Int,
+=======
+>>>>>>> origin/feature/radio-streaming
         override val title: String,
         override val url: String,
         val reciterName: String,
     ) : PlaybackItem() {
+<<<<<<< HEAD
         override val id: String = "surah_${reciterId}_$surahId"
+=======
+        override val id: String = "surah_$surahId"
+>>>>>>> origin/feature/radio-streaming
     }
 
     data class RadioItem(

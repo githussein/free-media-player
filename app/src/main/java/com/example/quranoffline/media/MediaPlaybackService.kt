@@ -78,12 +78,20 @@ class MediaPlaybackService : MediaSessionService() {
             manager.createNotificationChannel(channel)
         }
 
+<<<<<<< HEAD
+=======
+        // Build the notification
+>>>>>>> origin/feature/radio-streaming
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Quran Playback")
             .setContentText("Playing audio in background")
             .setSmallIcon(R.drawable.moshaf)
             .setPriority(NotificationCompat.PRIORITY_LOW)
+<<<<<<< HEAD
             .setOngoing(true)
+=======
+            .setOngoing(true) // Cannot be swiped away
+>>>>>>> origin/feature/radio-streaming
             .build()
 
         startForeground(1, notification)

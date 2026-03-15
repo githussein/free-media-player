@@ -11,7 +11,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RadioViewModel @Inject constructor(
+<<<<<<< HEAD:app/src/main/java/com/example/quranoffline/ui/Radio/RadioViewModel.kt
     private val repository: IRadioRepository
+=======
+    private val repository: RadioRepository
+>>>>>>> origin/feature/radio-streaming:app/src/main/java/com/example/quranoffline/ui/RadioStationsScreen/RadioStationsViewModel.kt
 ) : ViewModel() {
     private val _resultState = MutableStateFlow<RadiosResultState>(RadiosResultState.Loading)
     val resultState = _resultState.asStateFlow()
