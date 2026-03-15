@@ -3,183 +3,96 @@ package com.example.quranoffline.ui.Radio
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.quranoffline.R
+import com.example.quranoffline.data.Radio
 import com.example.quranoffline.media.MediaViewModel
-import androidx.compose.foundation.layout.Spacer
-import com.example.quranoffline.ui.components.shimmerEffect
-import com.example.quranoffline.ui.components.ComponentRadioHeroItem
-import com.example.quranoffline.media.PlaybackItem
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.runtime.remember
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.Alignment
+import com.example.quranoffline.ui.components.ComponentLoadingState
+import com.example.quranoffline.ui.components.ComponentRadioPoster
 
 @Composable
 fun RadioScreen(
     modifier: Modifier,
-    mediaViewModel: MediaViewModel,
-    radioViewModel: RadioViewModel = hiltViewModel()
+    radioViewModel: RadioViewModel = hiltViewModel(),
+    mediaViewModel: MediaViewModel = hiltViewModel()
 ) {
     val resultState by radioViewModel.resultState.collectAsState()
-    val searchQuery by radioViewModel.searchQuery.collectAsState()
-    val mediaState by mediaViewModel.mediaState.collectAsState()
+    val scrollState = rememberScrollState()
 
-    LaunchedEffect(Unit) {
-        radioViewModel.fetchRadioStations()
+    when (resultState) {
+        RadiosResultState.Idle -> Text("idle")
+
+        RadiosResultState.Loading -> ComponentLoadingState()
+
+        is RadiosResultState.Success -> Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                text = "Radios",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            val radioStations =
+                (resultState as RadiosResultState.Success).response.radios.take(20)
+
+            RadioStationsGrid(
+                stations = radioStations,
+                onRadioClick = { radio ->
+                    mediaViewModel.playRadio(radio)
+                }
+            )
+        }
+
+        is RadiosResultState.Failure -> Text("error")
     }
+}
 
-    Box(
-        modifier = modifier
+@Composable
+fun RadioStationsGrid(
+    stations: List<Radio>,
+    onRadioClick: (Radio) -> Unit
+) {
+    Column(
+        modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp)
     ) {
-        when (resultState) {
-            RadiosResultState.Loading -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    items(12) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(100.dp)
-                                .clip(RoundedCornerShape(24.dp))
-                                .shimmerEffect()
-                        )
-                    }
-                }
-            }
-
-            is RadiosResultState.Success -> {
-                val radioStations = (resultState as RadiosResultState.Success).response.radios
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item {
-                        Column(modifier = Modifier.padding(bottom = 8.dp, top = 16.dp)) {
-                            Text(
-                                text = stringResource(R.string.radios),
-                                style = MaterialTheme.typography.displaySmall,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.radio_subtitle),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    item {
-                        TextField(
-                            value = searchQuery,
-                            onValueChange = { radioViewModel.onSearchQueryChanged(it) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            placeholder = {
-                                Text(
-                                    text = stringResource(R.string.search_radios),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                                )
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-                            },
-                            singleLine = true,
-                            shape = RoundedCornerShape(100),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                                disabledIndicatorColor = Color.Transparent
-                            )
-                        )
-                    }
-
-                    val filteredStations = radioStations.filter {
-                        it.name.contains(searchQuery, ignoreCase = true)
-                    }
-
-                    itemsIndexed(filteredStations, key = { _, radio -> radio.id }) { index, radio ->
-                        // Premium Entrance Animation - limited to first 10 items to avoid scrolling delay
-                        val visibleState = remember { MutableTransitionState(false) }.apply { targetState = true }
-                        val animationDelay = if (index < 10) index * 60 else 0
-                        
-                        val isItemPlaying = mediaState.isPlaying && 
-                                           mediaState.currentItem is PlaybackItem.RadioItem && 
-                                           (mediaState.currentItem as PlaybackItem.RadioItem).radioId == radio.id
-
-                        AnimatedVisibility(
-                            visibleState = visibleState,
-                            enter = fadeIn(animationSpec = tween(500, delayMillis = animationDelay)) +
-                                    slideInVertically(initialOffsetY = { it / 2 }, animationSpec = tween(500, delayMillis = animationDelay))
-                        ) {
-                            ComponentRadioHeroItem(
-                                stationName = radio.name,
-                                isPlaying = isItemPlaying,
-                                onClick = { mediaViewModel.playRadio(radio) }
-                            )
-                        }
-                    }
-                    
-                    item {
-                        Spacer(modifier = Modifier.height(80.dp))
-                    }
-                }
-            }
-
-            is RadiosResultState.Failure -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = stringResource(R.string.error),
-                        color = MaterialTheme.colorScheme.error
+        stations.chunked(2).forEach { rowStations ->
+            Row(
+                modifier = Modifier.padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                rowStations.forEach { station ->
+                    ComponentRadioPoster(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { onRadioClick(station) },
+                        stationName = station.name,
+                        isHome = false
                     )
+                }
+
+                if (rowStations.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }

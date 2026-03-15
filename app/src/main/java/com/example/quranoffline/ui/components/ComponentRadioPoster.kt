@@ -38,6 +38,7 @@ import kotlin.math.abs
 fun ComponentRadioPoster(
     modifier: Modifier,
     stationName: String,
+<<<<<<< HEAD
     isPlaying: Boolean = false,
     isHome: Boolean = true
 ) {
@@ -55,6 +56,14 @@ fun ComponentRadioPoster(
 
     Column(
         modifier = modifier.then(if (isHome) Modifier.width(170.dp) else Modifier),
+=======
+    isHome: Boolean = true,
+    imageId: Int = R.drawable.masjid3
+) {
+    val posterHeight = if (isHome) 180.dp else 300.dp
+    Column(
+        modifier = modifier.width(200.dp),
+>>>>>>> origin/feature/radio-streaming
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ElevatedCard(
@@ -97,10 +106,18 @@ fun ComponentRadioPoster(
         Spacer(Modifier.height(8.dp))
 
         Text(
+<<<<<<< HEAD
             text = stationName.removePrefix("Radio ").trim(),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
+=======
+            stationName.removePrefix("Radio ").trim(),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+>>>>>>> origin/feature/radio-streaming
             overflow = TextOverflow.Ellipsis
         )
     }
