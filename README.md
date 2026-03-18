@@ -62,10 +62,11 @@ The source code is modularized logically by feature packages within [`com.exampl
 
 - **📖 Quran Scripts:** Read the Holy Quran directly in the app with high-quality scripts mapped dynamically. (See [`ui/ChapterScript`](app/src/main/java/com/example/quranoffline/ui/ChapterScript))
 - **🎧 Recitations:** Listen to beautiful recitations from various world-renowned reciters integrated with background playback. (See [`ui/reciters`](app/src/main/java/com/example/quranoffline/ui/reciters))
-- **📻 Islamic Radio:** Stream live Islamic radio stations without ever leaving the app. (See [`ui/Radio`](app/src/main/java/com/example/quranoffline/ui/Radio))
+- **📻 Islamic Radio:** Stream live Islamic radio stations with a modernized, transparent UI. (See [`ui/Radio`](app/src/main/java/com/example/quranoffline/ui/Radio))
 - **📚 Hadith Collections:** Browse and gracefully search through extensive, authentic Hadith books. (See [`ui/HadithScript`](app/src/main/java/com/example/quranoffline/ui/HadithScript))
-- **🎵 Robust Media Playback:** Background streaming integrated with system media controls via AndroidX Media3 framework.
-- **🌙 Dynamic Theming:** Full support for Material 3 design, handling responsive UI dynamically across Light/Dark modes.
+- **🎵 Interactive Media Playback:** Advanced media controller with an interactive seek bar supporting horizontal swipe gestures for precise seek, rewind, and fast-forward controls.
+- **🌙 Premium UI & Theming:** Modern Material 3 design with a unified purple color theme (`BrandPrimary`), providing a consistent experience in both Light and Dark modes.
+- **🖼 Optimized Visuals:** Enhanced image display and layout centering to ensure a high-quality, distortion-free experience across all devices.
 
 ---
 
