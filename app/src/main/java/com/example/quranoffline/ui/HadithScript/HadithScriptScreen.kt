@@ -86,7 +86,8 @@ fun HadithItem(hadith: Hadith) {
             text = "Hadith ${hadith.hadithNumber}",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Left
         )
         
         hadith.hadithArabic?.let {
@@ -106,7 +107,7 @@ fun HadithItem(hadith: Hadith) {
             Text(
                 text = it,
                 modifier = Modifier.padding(bottom = 8.dp),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(textAlign = TextAlign.Left),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.secondary
             )
@@ -116,7 +117,7 @@ fun HadithItem(hadith: Hadith) {
             Text(
                 text = it,
                 modifier = Modifier.padding(bottom = 16.dp),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Left),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
