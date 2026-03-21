@@ -122,7 +122,6 @@ fun HadithItem(hadith: Hadith) {
             )
         }
         
-        // Divider between separate Hadith items
-        HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant)
+        HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
