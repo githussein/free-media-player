@@ -29,7 +29,7 @@ import com.example.quranoffline.data.Hadith
 import com.example.quranoffline.ui.components.ComponentLoadingState
 import com.example.quranoffline.ui.theme.uthmanicFontFamily
 
-@Composable
+@Composable             
 fun HadithScriptScreen(
     modifier: Modifier,
     bookSlug: String,
@@ -122,6 +122,7 @@ fun HadithItem(hadith: Hadith) {
             )
         }
         
+        // Divider between separate Hadith items
         HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
