@@ -18,6 +18,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import androidx.media3.session.MediaNotification
+import androidx.media3.session.DefaultMediaNotificationProvider
+import androidx.media3.session.CommandButton
+import androidx.core.content.ContextCompat
+import com.google.common.collect.ImmutableList
 
 
 @AndroidEntryPoint
@@ -77,6 +82,33 @@ class MediaPlaybackService : MediaSessionService() {
         mediaSession = MediaSession.Builder(this, player)
             .setSessionActivity(pendingIntent)
             .build()
+            
+        setupNotification()
+    }
+
+    private fun setupNotification() {
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                getString(R.string.media_playback_channel_name),
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = getString(R.string.media_notification_channel_description)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notificationProvider = DefaultMediaNotificationProvider.Builder(this@MediaPlaybackService)
+            .setChannelId(CHANNEL_ID)
+            .setNotificationId(101)
+            .build()
+        
+        setMediaNotificationProvider(notificationProvider)
+    }
+    
+    companion object {
+        private const val CHANNEL_ID = "media_playback_channel"
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
@@ -103,9 +135,16 @@ class MediaPlaybackService : MediaSessionService() {
         currentIndex = startIndex
 
         val mediaItems = list.map {
-            MediaItem.Builder()
+            androidx.media3.common.MediaItem.Builder()
                 .setUri(it.url)
-                .setMediaId(it.id.toString())
+                .setMediaId(it.id)
+                .setMediaMetadata(
+                    androidx.media3.common.MediaMetadata.Builder()
+                        .setTitle(it.title)
+                        .setArtist(if (it is PlaybackItem.SurahItem) it.reciterName else getString(R.string.live_radio))
+                        .setArtworkUri(android.net.Uri.parse("android.resource://$packageName/${R.drawable.ic_splash_logo}"))
+                        .build()
+                )
                 .setTag(it)
                 .build()
         }

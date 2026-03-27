@@ -55,4 +55,6 @@
     <string name="reciters_subtitle">Listen to famous reciters from around the world</string>
     <string name="quran_script_subtitle">Read the Holy Quran with translations</string>
     <string name="hadith_script_subtitle">Read Hadith books with translations</string>
+    <string name="media_playback_channel_name">Media Playback</string>
+    <string name="media_notification_channel_description">Used for displaying media playback controls.</string>
 </resources>

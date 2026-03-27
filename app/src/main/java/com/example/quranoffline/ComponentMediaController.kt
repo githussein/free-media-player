@@ -63,7 +63,7 @@ fun MediaController(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = MaterialTheme.shapes.extraLarge,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = com.example.quranoffline.ui.theme.MediaControllerColors.Surface,
         tonalElevation = 4.dp,
         shadowElevation = 12.dp
     ) {

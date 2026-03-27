@@ -88,6 +88,13 @@ class MediaViewModel @Inject constructor(
             MediaItem.Builder()
                 .setUri(item.url)
                 .setMediaId(item.id)
+                .setMediaMetadata(
+                    androidx.media3.common.MediaMetadata.Builder()
+                        .setTitle(item.title)
+                        .setArtist(if (item is PlaybackItem.SurahItem) item.reciterName else context.getString(com.example.quranoffline.R.string.live_radio))
+                        .setArtworkUri(android.net.Uri.parse("android.resource://${context.packageName}/${com.example.quranoffline.R.drawable.ic_splash_logo}"))
+                        .build()
+                )
                 .setTag(item)
                 .build()
         }
@@ -153,6 +160,13 @@ class MediaViewModel @Inject constructor(
         val mediaItem = MediaItem.Builder()
             .setUri(radioItem.url)
             .setMediaId(radioItem.id)
+            .setMediaMetadata(
+                androidx.media3.common.MediaMetadata.Builder()
+                    .setTitle(radioItem.title)
+                    .setArtist(context.getString(com.example.quranoffline.R.string.live_radio))
+                    .setArtworkUri(android.net.Uri.parse("android.resource://${context.packageName}/${com.example.quranoffline.R.drawable.ic_splash_logo}"))
+                    .build()
+            )
             .setTag(radioItem)
             .build()
 

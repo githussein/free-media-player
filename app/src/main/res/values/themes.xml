@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.QuranOffline" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.QuranOffline" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/purple_200</item>
+    </style>
 
     <style name="Theme.QuranOffline.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#72189F</item>
