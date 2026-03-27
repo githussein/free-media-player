@@ -12,6 +12,9 @@ import androidx.media3.session.SessionToken
 import com.example.quranoffline.data.Radio
 import com.example.quranoffline.data.Surah
 import com.example.quranoffline.data.SurahUi
+import android.text.TextUtils
+import android.view.View
+import java.util.Locale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -191,9 +194,23 @@ class MediaViewModel @Inject constructor(
         _mediaState.value = MediaState()
     }
 
-    fun next() = controller?.seekToNextMediaItem()
+    fun next() {
+        val isRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
+        if (isRtl) {
+            controller?.seekToPreviousMediaItem()
+        } else {
+            controller?.seekToNextMediaItem()
+        }
+    }
 
-    fun previous() = controller?.seekToPreviousMediaItem()
+    fun previous() {
+        val isRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
+        if (isRtl) {
+            controller?.seekToNextMediaItem()
+        } else {
+            controller?.seekToPreviousMediaItem()
+        }
+    }
 
     fun seekTo(position: Long) {
         controller?.seekTo(position)

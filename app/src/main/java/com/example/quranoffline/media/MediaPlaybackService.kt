@@ -23,6 +23,7 @@ import androidx.media3.session.DefaultMediaNotificationProvider
 import androidx.media3.session.CommandButton
 import androidx.core.content.ContextCompat
 import com.google.common.collect.ImmutableList
+import androidx.media3.common.ForwardingPlayer
 
 
 @AndroidEntryPoint
@@ -79,7 +80,30 @@ class MediaPlaybackService : MediaSessionService() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        mediaSession = MediaSession.Builder(this, player)
+        val isRtl = resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
+        val playerToUse = if (isRtl) {
+            object : ForwardingPlayer(player) {
+                override fun seekToNext() = super.seekToPrevious()
+                override fun seekToPrevious() = super.seekToNext()
+                override fun seekToNextMediaItem() = super.seekToPreviousMediaItem()
+                override fun seekToPreviousMediaItem() = super.seekToNextMediaItem()
+                override fun hasNextMediaItem() = super.hasPreviousMediaItem()
+                override fun hasPreviousMediaItem() = super.hasNextMediaItem()
+                override fun isCommandAvailable(command: Int): Boolean {
+                    return if (command == Player.COMMAND_SEEK_TO_NEXT || command == Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM) {
+                        super.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS) || super.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                    } else if (command == Player.COMMAND_SEEK_TO_PREVIOUS || command == Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM) {
+                        super.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT) || super.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                    } else {
+                        super.isCommandAvailable(command)
+                    }
+                }
+            }
+        } else {
+            player
+        }
+
+        mediaSession = MediaSession.Builder(this, playerToUse)
             .setSessionActivity(pendingIntent)
             .build()
             
