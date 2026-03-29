@@ -172,24 +172,38 @@ class MediaPlaybackService : MediaSessionService() {
         super.onDestroy()
     }
 
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Refresh all media items in the playlist with updated localized strings
+        for (i in 0 until player.mediaItemCount) {
+            val tag = player.getMediaItemAt(i).localConfiguration?.tag as? PlaybackItem
+            if (tag != null) {
+                val updatedItem = createMediaItem(tag)
+                player.replaceMediaItem(i, updatedItem)
+            }
+        }
+    }
+
+    private fun createMediaItem(item: PlaybackItem): MediaItem {
+        return MediaItem.Builder()
+            .setUri(item.url)
+            .setMediaId(item.id)
+            .setMediaMetadata(
+                androidx.media3.common.MediaMetadata.Builder()
+                    .setTitle(item.title)
+                    .setArtist(if (item is PlaybackItem.SurahItem) item.reciterName else getString(R.string.live_radio))
+                    .setArtworkUri(android.net.Uri.parse("android.resource://$packageName/${R.drawable.ic_splash_logo}"))
+                    .build()
+            )
+            .setTag(item)
+            .build()
+    }
+
     fun setPlaylist(list: List<PlaybackItem>, startIndex: Int = 0) {
         playlist = list
         currentIndex = startIndex
 
-        val mediaItems = list.map {
-            androidx.media3.common.MediaItem.Builder()
-                .setUri(it.url)
-                .setMediaId(it.id)
-                .setMediaMetadata(
-                    androidx.media3.common.MediaMetadata.Builder()
-                        .setTitle(it.title)
-                        .setArtist(if (it is PlaybackItem.SurahItem) it.reciterName else getString(R.string.live_radio))
-                        .setArtworkUri(android.net.Uri.parse("android.resource://$packageName/${R.drawable.ic_splash_logo}"))
-                        .build()
-                )
-                .setTag(it)
-                .build()
-        }
+        val mediaItems = list.map { createMediaItem(it) }
 
         player.setMediaItems(mediaItems, startIndex, 0L)
         player.prepare()
