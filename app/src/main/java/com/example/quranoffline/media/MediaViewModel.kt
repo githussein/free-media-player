@@ -133,9 +133,10 @@ class MediaViewModel @Inject constructor(
                 PlaybackItem.SurahItem(
                     surahId = s.id,
                     reciterId = reciterId,
-                    title = s.name,
+                    titleEn = s.name,
                     url = url,
-                    reciterName = reciterName
+                    reciterName = reciterName,
+                    titleAr = null // We can expand this later if Surah model gets Arabic name
                 )
             } else null
         }
@@ -156,8 +157,9 @@ class MediaViewModel @Inject constructor(
 
         val radioItem = PlaybackItem.RadioItem(
             radioId = radio.id,
-            title = radio.name,
-            url = radio.url
+            titleEn = radio.name,
+            url = radio.url,
+            titleAr = null // We can expand this later if Radio model gets Arabic name
         )
 
         val mediaItem = MediaItem.Builder()

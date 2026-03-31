@@ -174,6 +174,10 @@ class MediaPlaybackService : MediaSessionService() {
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
+        
+        // Refresh notification channel to update its name/description in system settings
+        setupNotification()
+        
         // Refresh all media items in the playlist with updated localized strings
         for (i in 0 until player.mediaItemCount) {
             val tag = player.getMediaItemAt(i).localConfiguration?.tag as? PlaybackItem
@@ -185,12 +189,17 @@ class MediaPlaybackService : MediaSessionService() {
     }
 
     private fun createMediaItem(item: PlaybackItem): MediaItem {
+        val title = if (item is PlaybackItem.RadioItem) {
+            val isAr = resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
+            if (isAr) item.title.replace("Radio ", "إذاعة ") else item.title.replace("إذاعة ", "Radio ")
+        } else item.title
+
         return MediaItem.Builder()
             .setUri(item.url)
             .setMediaId(item.id)
             .setMediaMetadata(
                 androidx.media3.common.MediaMetadata.Builder()
-                    .setTitle(item.title)
+                    .setTitle(title)
                     .setArtist(if (item is PlaybackItem.SurahItem) item.reciterName else getString(R.string.live_radio))
                     .setArtworkUri(android.net.Uri.parse("android.resource://$packageName/${R.drawable.ic_splash_logo}"))
                     .build()
