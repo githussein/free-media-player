@@ -2,6 +2,7 @@ package com.example.quranoffline.ui.components
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -10,14 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 
 fun Modifier.shimmerEffect(): Modifier = composed {
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
+    var size by remember { mutableStateOf(IntSize.Zero) }
     val transition = rememberInfiniteTransition(label = "shimmer")
     val startOffsetX by transition.animateFloat(
         initialValue = -2 * size.width.toFloat(),
@@ -28,12 +26,15 @@ fun Modifier.shimmerEffect(): Modifier = composed {
         label = "shimmer"
     )
 
+    val baseColor = MaterialTheme.colorScheme.surfaceVariant
+    val highlightColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+
     background(
         brush = Brush.linearGradient(
             colors = listOf(
-                Color(0xFFF2F2F2),
-                Color(0xFFE0E0E0),
-                Color(0xFFF2F2F2),
+                baseColor,
+                highlightColor,
+                baseColor,
             ),
             start = Offset(startOffsetX, 0f),
             end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
