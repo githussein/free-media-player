@@ -47,7 +47,8 @@ fun ReciterListScreen(
     val resultState by reciterViewModel.resultState.collectAsState()
     val searchQuery by reciterViewModel.searchQuery.collectAsState()
 
-    LaunchedEffect(reciterViewModel) {
+    val currentLanguage = androidx.compose.ui.platform.LocalContext.current.resources.configuration.locales[0].language
+    LaunchedEffect(currentLanguage, reciterViewModel) {
         reciterViewModel.fetchReciters()
     }
 

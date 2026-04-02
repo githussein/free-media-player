@@ -32,8 +32,13 @@ class HomeDataViewModel @Inject constructor(
     private val _isRecitersLoading = MutableStateFlow(false)
     val isRecitersLoading: StateFlow<Boolean> = _isRecitersLoading.asStateFlow()
 
+    private var currentRadiosLanguage: String = ""
+    private var currentRecitersLanguage: String = ""
+
     fun fetchSuggestedRadios() {
-        if (_suggestedRadios.value.isNotEmpty()) return
+        val lang = com.example.quranoffline.util.LocaleHelper.getApiLanguage()
+        if (_suggestedRadios.value.isNotEmpty() && currentRadiosLanguage == lang) return
+        currentRadiosLanguage = lang
         
         _isRadiosLoading.value = true
         viewModelScope.launch {
@@ -50,7 +55,9 @@ class HomeDataViewModel @Inject constructor(
     }
 
     fun fetchSuggestedReciters() {
-        if (_suggestedReciters.value.isNotEmpty()) return
+        val lang = com.example.quranoffline.util.LocaleHelper.getApiLanguage()
+        if (_suggestedReciters.value.isNotEmpty() && currentRecitersLanguage == lang) return
+        currentRecitersLanguage = lang
         
         _isRecitersLoading.value = true
         viewModelScope.launch {

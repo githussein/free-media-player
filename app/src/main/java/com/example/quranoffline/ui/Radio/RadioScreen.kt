@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,8 @@ fun RadioScreen(
     val searchQuery by radioViewModel.searchQuery.collectAsState()
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(Unit) {
+    val currentLanguage = LocalContext.current.resources.configuration.locales[0].language
+    LaunchedEffect(currentLanguage) {
         radioViewModel.fetchRadioStations()
     }
 

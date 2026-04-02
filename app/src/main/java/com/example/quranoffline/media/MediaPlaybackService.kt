@@ -24,7 +24,25 @@ import androidx.media3.session.CommandButton
 import androidx.core.content.ContextCompat
 import com.google.common.collect.ImmutableList
 import androidx.media3.common.ForwardingPlayer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+import com.example.quranoffline.ui.reciters.IRecitersRepository
+import com.example.quranoffline.ui.Radio.IRadioRepository
 
+
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.EntryPointAccessors
+
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface MediaServiceEntryPoint {
+    fun recitersRepository(): IRecitersRepository
+    fun radioRepository(): IRadioRepository
+}
 
 @AndroidEntryPoint
 class MediaPlaybackService : MediaSessionService() {
@@ -175,15 +193,47 @@ class MediaPlaybackService : MediaSessionService() {
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
         
-        // Refresh notification channel to update its name/description in system settings
         setupNotification()
         
-        // Refresh all media items in the playlist with updated localized strings
-        for (i in 0 until player.mediaItemCount) {
-            val tag = player.getMediaItemAt(i).localConfiguration?.tag as? PlaybackItem
-            if (tag != null) {
-                val updatedItem = createMediaItem(tag)
-                player.replaceMediaItem(i, updatedItem)
+        CoroutineScope(Dispatchers.Main).launch {
+            val entryPoint = EntryPointAccessors.fromApplication(applicationContext, MediaServiceEntryPoint::class.java)
+            val recitersRepository = entryPoint.recitersRepository()
+            val radioRepository = entryPoint.radioRepository()
+
+            for (i in 0 until player.mediaItemCount) {
+                val tag = player.getMediaItemAt(i).localConfiguration?.tag as? PlaybackItem ?: continue
+                
+                var titleToUse = tag.title
+                var artistToUse = if (tag is PlaybackItem.SurahItem) tag.reciterName else getString(R.string.live_radio)
+                
+                if (tag is PlaybackItem.RadioItem) {
+                    try {
+                        val response = radioRepository.getRadioStations()
+                        response.radios.find { it.id == tag.radioId }?.let { titleToUse = it.name }
+                    } catch (e: Exception) {}
+                } else if (tag is PlaybackItem.SurahItem) {
+                    try {
+                        val response = recitersRepository.getReciterById(tag.reciterId.toString())
+                        response.reciters.firstOrNull()?.let { artistToUse = it.name }
+                        val surahs = recitersRepository.getSurahList()
+                        surahs.suwar.find { it.id == tag.surahId }?.let { titleToUse = it.name }
+                    } catch (e: Exception) {}
+                }
+
+                val newMediaItem = MediaItem.Builder()
+                    .setUri(tag.url)
+                    .setMediaId(tag.id)
+                    .setMediaMetadata(
+                        androidx.media3.common.MediaMetadata.Builder()
+                            .setTitle(titleToUse)
+                            .setArtist(artistToUse)
+                            .setArtworkUri(android.net.Uri.parse("android.resource://$packageName/${R.drawable.ic_splash_logo}"))
+                            .build()
+                    )
+                    .setTag(tag)
+                    .build()
+
+                player.replaceMediaItem(i, newMediaItem)
             }
         }
     }

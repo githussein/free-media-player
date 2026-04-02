@@ -132,7 +132,7 @@ fun MediaController(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = currentItem.title.removePrefix("Radio ").removePrefix("إذاعة ").trim(),
+                        text = (mediaState.displayTitle ?: currentItem.title).removePrefix("Radio ").removePrefix("إذاعة ").trim(),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -141,7 +141,7 @@ fun MediaController(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = when (currentItem) {
+                        text = mediaState.displayArtist ?: when (currentItem) {
                             is PlaybackItem.SurahItem -> currentItem.reciterName
                             is PlaybackItem.RadioItem -> stringResource(R.string.live_radio)
                         },

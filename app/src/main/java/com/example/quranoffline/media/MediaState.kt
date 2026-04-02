@@ -5,5 +5,7 @@ data class MediaState(
     val isPlaying: Boolean = false,
     val isLoading: Boolean = false,
     val progress: Long = 0L,
-    val duration: Long = 0L
+    val duration: Long = 0L,
+    val displayTitle: String? = null,
+    val displayArtist: String? = null
 )

@@ -67,9 +67,18 @@ class MediaViewModel @Inject constructor(
                         if (index in currentPlaylist.indices) {
                             _mediaState.value = _mediaState.value.copy(
                                 currentItem = currentPlaylist[index],
-                                duration = controller?.duration?.coerceAtLeast(0L) ?: 0L
+                                duration = controller?.duration?.coerceAtLeast(0L) ?: 0L,
+                                displayTitle = mediaItem?.mediaMetadata?.title?.toString(),
+                                displayArtist = mediaItem?.mediaMetadata?.artist?.toString()
                             )
                         }
+                    }
+
+                    override fun onMediaMetadataChanged(mediaMetadata: androidx.media3.common.MediaMetadata) {
+                        _mediaState.value = _mediaState.value.copy(
+                            displayTitle = mediaMetadata.title?.toString(),
+                            displayArtist = mediaMetadata.artist?.toString()
+                        )
                     }
 
                     override fun onPlaybackStateChanged(state: Int) {

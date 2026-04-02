@@ -79,7 +79,8 @@ fun HomeScreen(
     val isRadiosLoading by homeDataViewModel.isRadiosLoading.collectAsState()
     val isRecitersLoading by homeDataViewModel.isRecitersLoading.collectAsState()
 
-    LaunchedEffect(homeDataViewModel) {
+    val currentLanguage = LocalContext.current.resources.configuration.locales[0].language
+    LaunchedEffect(currentLanguage, homeDataViewModel) {
         homeDataViewModel.fetchSuggestedRadios()
         homeDataViewModel.fetchSuggestedReciters()
     }
