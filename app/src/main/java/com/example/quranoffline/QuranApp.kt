@@ -24,39 +24,36 @@ fun QuranApp() {
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
-            containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background
+            containerColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
+            bottomBar = {
+                AnimatedVisibility(
+                    visible = mediaState.currentItem != null,
+                    enter = slideInVertically { it },
+                    exit = slideOutVertically { it }
+                ) {
+                    Box(modifier = Modifier.navigationBarsPadding()) {
+                        MediaController(
+                            mediaState = mediaState,
+                            onPlayPauseClick = {
+                                if (mediaState.isPlaying) {
+                                    mediaViewModel.pause()
+                                } else {
+                                    mediaViewModel.resume()
+                                }
+                            },
+                            onNext = { mediaViewModel.next() },
+                            onPrevious = { mediaViewModel.previous() },
+                            onSeek = { mediaViewModel.seekTo(it) }
+                        )
+                    }
+                }
+            }
         ) { innerPadding ->
             AppNavHost(
                 navController = navController,
                 innerPadding = innerPadding,
                 mediaViewModel = mediaViewModel
             )
-        }
-
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .navigationBarsPadding()
-        ) {
-            AnimatedVisibility(
-                visible = mediaState.currentItem != null,
-                enter = slideInVertically { it },
-                exit = slideOutVertically { it }
-            ) {
-                MediaController(
-                    mediaState = mediaState,
-                    onPlayPauseClick = {
-                        if (mediaState.isPlaying) {
-                            mediaViewModel.pause()
-                        } else {
-                            mediaViewModel.resume()
-                        }
-                    },
-                    onNext = { mediaViewModel.next() },
-                    onPrevious = { mediaViewModel.previous() },
-                    onSeek = { mediaViewModel.seekTo(it) }
-                )
-            }
         }
     }
 }

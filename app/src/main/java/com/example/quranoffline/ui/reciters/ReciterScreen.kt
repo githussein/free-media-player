@@ -75,7 +75,6 @@ fun ReciterScreen(
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {

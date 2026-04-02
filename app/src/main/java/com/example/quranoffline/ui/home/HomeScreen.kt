@@ -89,7 +89,7 @@ fun HomeScreen(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(verticalScrollState)
-            .padding(top = 32.dp, bottom = 100.dp),
+            .padding(top = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(

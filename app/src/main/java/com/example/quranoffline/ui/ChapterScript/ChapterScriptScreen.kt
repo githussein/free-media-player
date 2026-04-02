@@ -47,8 +47,7 @@ fun ChapterScriptScreen(
 
         is ChaptersResultState.ScriptSuccess -> {
             LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 140.dp)
+                modifier = modifier.fillMaxSize()
             ) {
                 item {
                     ComponentGradientBox {

@@ -39,8 +39,7 @@ fun BookScreen(
         BookResultState.Loading -> ComponentLoadingState()
 
         is BookResultState.Success -> LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp)
+            modifier = modifier.fillMaxSize()
         ) {
             item {
                 Text(

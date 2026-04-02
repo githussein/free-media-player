@@ -85,8 +85,7 @@ fun ReciterListScreen(
             }
             
             LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 100.dp)
+                modifier = modifier.fillMaxSize()
             ) {
                 item {
                     Text(

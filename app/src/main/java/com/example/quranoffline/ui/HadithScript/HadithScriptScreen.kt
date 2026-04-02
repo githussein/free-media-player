@@ -48,8 +48,7 @@ fun HadithScriptScreen(
         is BookResultState.HadithSuccess -> {
             val response = (resultState as BookResultState.HadithSuccess).response
             LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp)
+                modifier = modifier.fillMaxSize()
             ) {
                 item {
                     Text(

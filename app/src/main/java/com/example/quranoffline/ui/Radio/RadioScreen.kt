@@ -59,8 +59,7 @@ fun RadioScreen(
         is RadiosResultState.Success -> Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(bottom = 100.dp),
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
