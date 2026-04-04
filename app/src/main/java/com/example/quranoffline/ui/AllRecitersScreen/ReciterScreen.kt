@@ -124,16 +124,23 @@ fun ReciterDropdownMenu(
                     contentDescription = "arrow down icon"
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
-                errorIndicatorColor = Color.Transparent
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
-            shape = RoundedCornerShape(50),
+            shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .menuAnchor()
-                .clickable { expanded = true }
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         )
 
         ExposedDropdownMenu(
