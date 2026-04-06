@@ -38,6 +38,9 @@ fun HadithScriptScreen(
 ) {
     LaunchedEffect(bookSlug, chapterId) {
         viewModel.fetchHadiths(bookSlug, chapterId)
+        if (viewModel.book.value == null) {
+            viewModel.fetchBookById(bookSlug)
+        }
     }
 
     val resultState by viewModel.resultState.collectAsState()
@@ -47,18 +50,34 @@ fun HadithScriptScreen(
 
         is BookResultState.HadithSuccess -> {
             val response = (resultState as BookResultState.HadithSuccess).response
+            val bookData by viewModel.book.collectAsState()
+            val currentChapter = bookData?.chapters?.find { it.chapterNumber == chapterId }
+            
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 100.dp)
             ) {
                 item {
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedBookName(bookSlug, bookSlug),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = com.example.quranoffline.util.HadithLocalizationHelper.getLocalizedBookName(bookSlug, bookSlug),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        
+                        currentChapter?.let { chapter ->
+                            val chapterName = if (com.example.quranoffline.util.LocaleHelper.getApiLanguage() == "ar") 
+                                chapter.chapterArabic else chapter.chapterEnglish
+                            
+                            Text(
+                                text = chapterName,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(top = 4.dp),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
                 items(response.hadiths.data) { hadith ->
                     HadithItem(hadith)
@@ -83,17 +102,20 @@ fun HadithItem(hadith: Hadith) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Hadith ${hadith.hadithNumber}",
+            text = "${stringResource(R.string.hadith)} ${hadith.hadithNumber}",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Left
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
         )
         
         hadith.hadithArabic?.let {
             Text(
                 text = it,
-                modifier = Modifier.padding(vertical = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
                 style = TextStyle(
                     fontFamily = uthmanicFontFamily,
                     fontSize = 22.sp,
@@ -106,7 +128,9 @@ fun HadithItem(hadith: Hadith) {
         hadith.englishNarrator?.let {
             Text(
                 text = it,
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
                 style = MaterialTheme.typography.bodySmall.copy(textAlign = TextAlign.Left),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.secondary
@@ -116,7 +140,9 @@ fun HadithItem(hadith: Hadith) {
         hadith.hadithEnglish?.let {
             Text(
                 text = it,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
                 style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Left),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
