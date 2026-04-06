@@ -11,7 +11,9 @@ object HadithLocalizationHelper {
         "sunan-nasai" to "سنن النسائي",
         "mishkat" to "مشكاة المصابيح",
         "musnad-ahmad" to "مسند أحمد",
-        "al-silsila-sahiha" to "السلسلة الصحيحة"
+        "al-silsila-sahiha" to "السلسلة الصحيحة",
+        "sunan-darimi" to "سنن الدارمي",
+        "mowatta-malik" to "موطأ مالك"
     )
 
     private val writerNameMapAr = mapOf(
@@ -23,7 +25,9 @@ object HadithLocalizationHelper {
         "Imam Ahmad an-Nasa`i" to "الإمام أحمد النسائي",
         "Imam Khatib at-Tabrizi" to "الإمام الخطيب التبريزي",
         "Imam Ahmad ibn Hanbal" to "الإمام أحمد بن حنبل",
-        "Allama Muhammad Nasir Uddin Al-Bani" to "العلامة محمد ناصر الدين الألباني"
+        "Allama Muhammad Nasir Uddin Al-Bani" to "العلامة محمد ناصر الدين الألباني",
+        "Imam ad-Darimi" to "الإمام الدارمي",
+        "Imam Malik" to "الإمام مالك"
     )
 
     fun getLocalizedBookName(slug: String, defaultName: String): String {
