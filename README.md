@@ -53,7 +53,7 @@ The source code is modularized logically by feature packages within [`com.exampl
 | **[`/di`](app/src/main/java/com/example/quranoffline/di)**        | Dependency injection configurations utilizing Hilt to instantiate network clients and repositories. | [`AppModule.kt`](app/src/main/java/com/example/quranoffline/di/AppModule.kt), [`RepositoryModule.kt`](app/src/main/java/com/example/quranoffline/di/RepositoryModule.kt) |
 | **[`/media`](app/src/main/java/com/example/quranoffline/media)**  | The core media engine built with AndroidX Media3, managing player state, foreground services, and view-model bridging. | [`MediaPlaybackService.kt`](app/src/main/java/com/example/quranoffline/media/MediaPlaybackService.kt), [`MediaViewModel.kt`](app/src/main/java/com/example/quranoffline/media/MediaViewModel.kt) |
 | **[`/ui`](app/src/main/java/com/example/quranoffline/ui)**        | The presentation layer housing all UI screens, custom composables, components, and MVVM integration. | [`home`](app/src/main/java/com/example/quranoffline/ui/home), [`reciters`](app/src/main/java/com/example/quranoffline/ui/reciters), [`components`](app/src/main/java/com/example/quranoffline/ui/components) |
-| **[`/util`](app/src/main/java/com/example/quranoffline/util)**    | General helper utilities, including localization and extensions. | [`LocaleHelper.kt`](app/src/main/java/com/example/quranoffline/util/LocaleHelper.kt) |
+| **[`/util`](app/src/main/java/com/example/quranoffline/util)**    | General helper utilities, including localization and extensions. | [`LocaleHelper.kt`](app/src/main/java/com/example/quranoffline/util/LocaleHelper.kt), [`HadithLocalizationHelper.kt`](app/src/main/java/com/example/quranoffline/util/HadithLocalizationHelper.kt) |
 | **`Root`**                                                        | Root entry points, Main Activity, and navigation graphing. | [`MainActivity.kt`](app/src/main/java/com/example/quranoffline/MainActivity.kt), [`AppNavHost.kt`](app/src/main/java/com/example/quranoffline/AppNavHost.kt) |
 
 ---
@@ -67,6 +67,7 @@ The source code is modularized logically by feature packages within [`com.exampl
 - **🎵 Interactive Media Playback:** Advanced media controller with an interactive seek bar supporting horizontal swipe gestures for precise seek, rewind, and fast-forward controls.
 - **🌙 Premium UI & Theming:** Modern Material 3 design with a unified purple color theme (`BrandPrimary`), providing a consistent experience in both Light and Dark modes.
 - **🖼 Optimized Visuals:** Enhanced image display and layout centering to ensure a high-quality, distortion-free experience across all devices.
+- **🌍 Full RTL & Localization Support:** Optimized for both Arabic and English languages with seamless Right-to-Left (RTL) layout support, including localized media notifications and UI components. (See [`util/HadithLocalizationHelper.kt`](app/src/main/java/com/example/quranoffline/util/HadithLocalizationHelper.kt))
 
 ---
 
