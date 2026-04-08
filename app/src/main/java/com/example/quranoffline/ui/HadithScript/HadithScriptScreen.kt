@@ -78,7 +78,7 @@ fun HadithScriptScreen(
                         }
                     }
                 }
-                items(response.hadiths.data) { hadith ->
+                items(response.hadiths.data, key = { it.id }) { hadith ->
                     HadithItem(hadith)
                 }
             }
