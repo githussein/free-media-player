@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -84,11 +85,9 @@ fun BookChaptersScreen(
             }
 
 
-            bookData?.chapters?.forEachIndexed { index, chapter ->
-                item {
-                    ComponentBookChapterItem(index = (index + 1).toString(), chapter = chapter) {
-                        navController.navigate(com.example.quranoffline.Hadiths(chapter.bookSlug, chapter.chapterNumber))
-                    }
+            itemsIndexed(bookData?.chapters.orEmpty(), key = { _, chapter -> chapter.id }) { index, chapter ->
+                ComponentBookChapterItem(index = (index + 1).toString(), chapter = chapter) {
+                    navController.navigate(com.example.quranoffline.Hadiths(chapter.bookSlug, chapter.chapterNumber))
                 }
             }
         }
