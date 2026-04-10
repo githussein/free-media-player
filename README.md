@@ -35,7 +35,7 @@ A modern, open-source Android application for Quranic listening, reading, and le
 The application relies on modern Android standards, adhering to **Clean Architecture** and the **MVVM (Model-View-ViewModel)** design pattern, ensuring a scalable and easily maintainable codebase.
 
 - **UI Framework:** [Jetpack Compose](https://developer.android.com/jetpack/compose) featuring responsive Material 3 design and dynamic theming.
-- **Dependency Injection:** [Dagger Hilt](https://dagger.dev/hilt/) for module scoping and loosely coupled dependencies. (See [`/di`](app/src/main/java/com/example/quranoffline/di))
+- **DI:** [Dagger Hilt](https://dagger.dev/hilt/) for module scoping and loosely coupled dependencies. (See [`/di`](app/src/main/java/com/example/quranoffline/di))
 - **Networking:** [Retrofit](https://square.github.io/retrofit/) & [Gson](https://github.com/google/gson) for building type-safe REST API clients. (See [`/data`](app/src/main/java/com/example/quranoffline/data))
 - **Media Playback:** [Media3 / ExoPlayer](https://developer.android.com/media/media3) for seamless background audio streaming and lifecycle management. (See [`/media`](app/src/main/java/com/example/quranoffline/media))
 - **Concurrency:** Built extensively on [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) & reactive UI states with `StateFlow`.
