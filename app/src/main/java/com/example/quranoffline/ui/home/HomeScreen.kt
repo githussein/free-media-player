@@ -123,7 +123,7 @@ fun HomeScreen(
             modifier = Modifier
                 .horizontalScroll(scrollState)
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             if (isRadiosLoading) {
                 repeat(3) {
